@@ -1,0 +1,9 @@
+starlette==1.6.0
+uvicorn==0.52.4
+python-multipart==0.0.32
+pydantic==2.13.4
+httpx==0.28.1
+python-dotenv==1.2.3
+PyMuPDF==1.28.2
+reportlab==4.5.1
+Pillow==12.3.0
