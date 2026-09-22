@@ -134,7 +134,7 @@ const nodes = [
   ["React / TypeScript", "Interface"],
   ["Python / Starlette", "API"],
   ["Texto + visão", "Leitura"],
-  ["OpenAI + Pydantic", "Extração e validação"],
+  ["Gemini + Pydantic", "Extração e validação"],
   ["SQLite", "Persistência"],
   ["Comparação + PDF", "Resultado"],
 ];
@@ -155,7 +155,7 @@ text(
   { color: C.accent },
 );
 s.addNotes(
-  "Fluxo: interface, API, recepção, leitura por página, extração multimodal, validação de evidências, SQLite e comparação. Documentação: docs/ARQUITETURA.md. OpenAI Structured Outputs: https://developers.openai.com/api/docs/guides/structured-outputs",
+  "Fluxo: interface, API, recepção, leitura por página, extração multimodal, validação de evidências, SQLite e comparação. Documentação: docs/ARQUITETURA.md. Gemini structured output: https://ai.google.dev/gemini-api/docs/structured-output",
 );
 s = base("Cada informação tem uma origem", 5);
 text(s, "Valor extraído", 0.7, 2.1, 4, 0.5, 20, { color: C.muted });

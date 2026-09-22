@@ -95,7 +95,7 @@ class EvidenceTests(unittest.TestCase):
 class ApiTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
-        self.env = patch.dict(os.environ, {"DATA_DIR": self.tmp.name, "OPENAI_API_KEY": ""})
+        self.env = patch.dict(os.environ, {"DATA_DIR": self.tmp.name, "GEMINI_API_KEY": ""})
         self.env.start()
         self.client = TestClient(app)
         self.client.__enter__()
@@ -138,13 +138,13 @@ class ApiTests(unittest.TestCase):
     def test_no_key_returns_actionable_error_without_fake_ai(self):
         res = self.client.post("/api/upload", files={"file": ("test.pdf", sample_pdf(demo_pages(0)), "application/pdf")})
         self.assertEqual(res.status_code, 503)
-        self.assertIn("OPENAI_API_KEY", res.json()["error"])
+        self.assertIn("GEMINI_API_KEY", res.json()["error"])
         self.assertEqual(self.client.get("/api/policies").json(), [])
 
     def test_upload_processing_with_mocked_provider(self):
         facts = [Fact(key=k, value=VALUES[0][i], quote=f"{FIELDS[k][0]}: {VALUES[0][i]}.", page=1 if i < 8 else 2) for i, k in enumerate(FIELDS)]
         extraction = Extraction(document_type="do_policy", title="D&O extraído", facts=facts, warnings=[])
-        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-not-real"}), patch("backend.agents.response", new=AsyncMock(return_value=extraction.model_dump_json())):
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "test-not-real"}), patch("backend.agents.response", new=AsyncMock(return_value=extraction.model_dump_json())):
             response = self.client.post("/api/upload", files={"file": ("../example.pdf", sample_pdf(demo_pages(0)), "application/pdf")})
             self.assertEqual(response.status_code, 202)
             item_id = response.json()["id"]
@@ -162,7 +162,7 @@ class ApiTests(unittest.TestCase):
             self.assertTrue(self.client.get("/api/policies/" + item_id + "/source").content.startswith(b"%PDF"))
 
     def test_provider_failure_is_saved_and_retryable(self):
-        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-not-real"}), patch("backend.agents.response", new=AsyncMock(side_effect=agents.ProviderError("Limite da API"))):
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "test-not-real"}), patch("backend.agents.response", new=AsyncMock(side_effect=agents.ProviderError("Limite da API"))):
             response = self.client.post("/api/upload", files={"file": ("test.pdf", sample_pdf(demo_pages(0)), "application/pdf")})
             item_id = response.json()["id"]
             from backend.app import tasks
@@ -175,7 +175,7 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(p["error"], "Limite da API")
 
     def test_corrupt_upload_rejected(self):
-        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-not-real"}):
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "test-not-real"}):
             response = self.client.post("/api/upload", files={"file": ("test.pdf", b"invalid", "application/pdf")})
         self.assertEqual(response.status_code, 400)
 

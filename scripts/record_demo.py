@@ -30,7 +30,7 @@ with sync_playwright() as p:
     video = page.video
     slide(page,"INSURMINDS / D&O","Clareza na comparação de apólices","Uma plataforma para organizar informações, identificar diferenças e conferir a origem de cada dado.",9)
     slide(page,"O PROBLEMA","Os detalhes mudam a análise","Limites, franquias, coberturas e exclusões precisam ser lidos em conjunto. Localizar cada condição é parte essencial da comparação.",11)
-    slide(page,"ARQUITETURA","Interface simples. Processamento especializado.","React → API Python → leitura de PDF ou imagem\nOpenAI + validação → SQLite → comparação e PDF\n\nIA na extração e consulta. Comparação textual reproduzível.",13)
+    slide(page,"ARQUITETURA","Interface simples. Processamento especializado.","React → API Python → leitura de PDF ou imagem\nGemini + validação → SQLite → comparação e PDF\n\nIA na extração e consulta. Comparação textual reproduzível.",13)
     page.goto('http://127.0.0.1:5173',wait_until='networkidle')
     expect(page.get_by_role('heading',name='Visão geral.')).to_be_visible()
     caption(page,'A plataforma em funcionamento','A biblioteca organiza documentos, acompanha análises e mantém as comparações no histórico.',8)
@@ -65,7 +65,7 @@ with sync_playwright() as p:
     caption(page,'Histórico persistente','As comparações ficam no SQLite e podem ser retomadas depois de reiniciar o aplicativo.',8)
     page.get_by_role('button',name='Visão geral',exact=True).click()
     page.get_by_role('button',name='Nova análise',exact=True).click()
-    caption(page,'Recebimento de novos documentos','O upload aceita PDF, PNG, JPG e WebP. A extração real exige uma chave OpenAI configurada no servidor.',11)
+    caption(page,'Recebimento de novos documentos','O upload aceita PDF, PNG, JPG e WebP. A extração real exige uma chave Gemini configurada no servidor.',11)
     page.keyboard.press('Escape')
     page.get_by_role('button',name='Configurações',exact=True).click()
     caption(page,'Validação com IA ainda pendente','Esta gravação demonstra a interface com exemplos. A chamada real ao modelo depende da credencial da equipe.',10)

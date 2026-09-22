@@ -67,7 +67,7 @@ async def lifespan(app):
         await asyncio.gather(*tasks, return_exceptions=True)
 
 async def health(request):
-    return JSONResponse({"status": "ok", "ai_configured": agents.configured(), "model": __import__('os').getenv("OPENAI_MODEL", "gpt-4.1-mini"), "fields": FIELDS})
+    return JSONResponse({"status": "ok", "ai_configured": agents.configured(), "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.6-flash"), "fields": FIELDS})
 
 async def policies(request):
     return JSONResponse([public(p) for p in storage.all_items("policies")])
@@ -79,7 +79,7 @@ async def demo(request):
 
 async def upload(request: Request):
     if not agents.configured():
-        return JSONResponse({"error": "Configure OPENAI_API_KEY no .env do servidor. Você também pode explorar os exemplos fictícios."}, status_code=503)
+        return JSONResponse({"error": "Configure GEMINI_API_KEY no .env do servidor. Você também pode explorar os exemplos fictícios."}, status_code=503)
     async with request.form(max_files=1, max_fields=2, max_part_size=MAX_BYTES) as form:
         file = form.get("file")
         if not file or not hasattr(file, "read"):
@@ -94,7 +94,7 @@ async def upload(request: Request):
     path = storage.root() / (item_id + extension)
     path.write_bytes(data)
     actual_mime = mime
-    policy = {"id": item_id, "title": Path(filename).stem, "filename": filename, "mime": actual_mime, "file_path": str(path), "status": "queued", "demo": False, "created_at": now(), "facts": [], "pages": pages, "warnings": [], "model": __import__('os').getenv("OPENAI_MODEL", "gpt-4.1-mini")}
+    policy = {"id": item_id, "title": Path(filename).stem, "filename": filename, "mime": actual_mime, "file_path": str(path), "status": "queued", "demo": False, "created_at": now(), "facts": [], "pages": pages, "warnings": [], "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.6-flash")}
     storage.save("policies", policy)
     task = asyncio.create_task(process(item_id, data))
     tasks.add(task)
@@ -113,7 +113,7 @@ async def retry(request):
     if p["status"] != "error" or p["demo"]:
         raise ValueError("Somente documentos com falha podem ser reprocessados.")
     if not agents.configured():
-        raise ValueError("Configure OPENAI_API_KEY no servidor.")
+        raise ValueError("Configure GEMINI_API_KEY no servidor.")
     if len(tasks) >= 6:
         raise ValueError("Fila cheia. Aguarde o processamento atual.")
     data = Path(p["file_path"]).read_bytes()

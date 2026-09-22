@@ -6,7 +6,7 @@ O MVP recebe PDFs ou imagens, extrai 16 critérios com referências à origem, a
 
 ## Execução rápida
 
-Requisitos: Node.js 24 e Python 3.14, versões usadas na validação. A extração real requer chave e saldo na API da OpenAI. O modo de exemplos funciona sem chave e utiliza documentos fictícios com resultados pré-preenchidos; ele não cumpre, sozinho, o requisito de processamento por IA generativa.
+Requisitos: Node.js 24 e Python 3.14, versões usadas na validação. A extração real requer chave e cota na API do Google Gemini. O modo de exemplos funciona sem chave e utiliza documentos fictícios com resultados pré-preenchidos; ele não cumpre, sozinho, o requisito de processamento por IA generativa.
 
 ```powershell
 npm install
@@ -15,7 +15,7 @@ py -3.14 -m venv .venv
 Copy-Item .env.example .env
 ```
 
-Preencha `OPENAI_API_KEY` em `.env`. Nunca coloque a chave no frontend ou no Git. O modelo padrão é `gpt-4.1-mini`, alterável por `OPENAI_MODEL`. Reinicie a API após editar o ambiente.
+Preencha `GEMINI_API_KEY` em `.env`. Nunca coloque a chave no frontend ou no Git. O modelo padrão é `gemini-3.6-flash`, alterável por `GEMINI_MODEL`. Reinicie a API após editar o ambiente.
 
 No primeiro terminal:
 
@@ -48,7 +48,7 @@ Nesse modo, acesse http://127.0.0.1:8001. O backend serve o conteúdo de `dist/`
 4. Exporte o PDF e retome o resultado pelo histórico.
 5. Para demonstrar IA real, configure a chave, use **Nova análise** e envie os PDFs de `Projeto_Final_Artefatos/exemplos/`. O upload cria novas análises com chamada ao modelo; carregar exemplos apenas insere fixtures.
 
-Os arquivos ficam em `data/`, junto ao SQLite. Eles persistem ao reiniciar. O conteúdo enviado para extração e consulta é processado pela OpenAI. O MVP é local, sem login e sem isolamento entre usuários; não o exponha publicamente sem adaptar a arquitetura.
+Os arquivos ficam em `data/`, junto ao SQLite. Eles persistem ao reiniciar. O conteúdo enviado para extração e consulta é processado pelo Google Gemini. O MVP é local, sem login e sem isolamento entre usuários; não o exponha publicamente sem adaptar a arquitetura.
 
 ## Tecnologias e organização
 
@@ -62,7 +62,7 @@ Projeto_Final_Artefatos/  Relatório técnico, pitch, vídeo e exemplos fictíci
 .github/workflows/        Verificação automatizada do código
 ```
 
-Frontend: React 19, TypeScript, Vite, Lucide, DM Sans e Manrope. Backend: Python, Starlette, uvicorn, Pydantic, HTTPX, PyMuPDF, Pillow e SQLite. IA: OpenAI Responses API com saída estruturada e leitura multimodal. PDFs: ReportLab. Artefatos: PptxGenJS e FFmpeg. As fontes são locais e não dependem de CDN.
+Frontend: React 19, TypeScript, Vite, Lucide, DM Sans e Manrope. Backend: Python, Starlette, uvicorn, Pydantic, Google GenAI SDK, PyMuPDF, Pillow e SQLite. IA: Google Gemini GenerateContent com saída JSON estruturada e leitura multimodal. PDFs: ReportLab. Artefatos: PptxGenJS e FFmpeg. As fontes são locais e não dependem de CDN.
 
 Consulte [a arquitetura, decisões e limitações](docs/ARQUITETURA.md). O sistema usa componentes especializados de pipeline, com IA na extração e consulta. A comparação é textual e determinística; igualdade de texto não comprova equivalência jurídica.
 
@@ -91,7 +91,7 @@ No Windows, usa Edge em modo sem janela. Em Linux, instale o Chromium com `pytho
 - Código-fonte e artefatos em `Projeto_Final_Artefatos/InsurMinds_Codigo_Fonte.zip`, gerado por `python scripts/build_delivery.py`.
 - Repositório público: https://github.com/vicTmm/i2a2-desafio-final.
 
-A demonstração gravada utiliza exemplos fictícios e identifica essa condição na própria interface. Para apresentar uma execução real de IA, configure `OPENAI_API_KEY`, processe documentos próprios e grave uma nova demonstração. Nenhum resultado simulado deve ser apresentado como execução real de IA.
+A demonstração gravada utiliza exemplos fictícios e identifica essa condição na própria interface. Para apresentar uma execução real de IA, configure `GEMINI_API_KEY`, processe documentos próprios e grave uma nova demonstração. Nenhum resultado simulado deve ser apresentado como execução real de IA.
 
 Prazo informado no enunciado: **06/10/2026 às 23h59**.
 

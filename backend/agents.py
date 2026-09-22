@@ -2,7 +2,9 @@
 import json
 import os
 import re
-import httpx
+import base64
+from google import genai
+from google.genai import types
 from .models import Extraction, FIELDS
 
 PROMPT = """Você extrai dados de apólices de seguro D&O em português.
@@ -20,31 +22,46 @@ class ProviderError(Exception):
     pass
 
 def configured():
-    return bool(os.getenv("OPENAI_API_KEY", "").strip())
+    return bool(os.getenv("GEMINI_API_KEY", "").strip())
 
 async def response(content, instructions, schema=None):
     if not configured():
-        raise ProviderError("Configure OPENAI_API_KEY no arquivo .env do servidor para usar a IA.")
-    body = {"model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"), "store": False,
-            "instructions": instructions, "input": [{"role": "user", "content": content}],
-            "max_output_tokens": 10000}
-    if schema:
-        body["text"] = {"format": {"type": "json_schema", "name": "policy_extraction", "strict": True, "schema": schema}}
+        raise ProviderError("Configure GEMINI_API_KEY no arquivo .env do servidor para usar a IA.")
+    parts = []
+    for item in content:
+        if item.get("type") in {"input_text", "text"}:
+            parts.append(types.Part.from_text(text=item.get("text", "")))
+        elif item.get("type") == "input_image":
+            data_url = item.get("image_url", "")
+            header, encoded = data_url.split(",", 1)
+            mime_type = header.split(";", 1)[0].removeprefix("data:") or "image/png"
+            parts.append(types.Part.from_bytes(data=base64.b64decode(encoded), mime_type=mime_type))
+    config = types.GenerateContentConfig(
+        system_instruction=instructions,
+        temperature=0,
+        max_output_tokens=10000,
+        response_mime_type="application/json" if schema else None,
+        response_json_schema=schema,
+    )
     try:
-        async with httpx.AsyncClient(timeout=180) as client:
-            res = await client.post("https://api.openai.com/v1/responses", json=body,
-                                    headers={"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"]})
-        if res.status_code != 200:
-            messages = {401: "Chave de IA inválida.", 429: "Limite ou saldo da API atingido. Verifique sua conta e tente novamente."}
-            raise ProviderError(messages.get(res.status_code, f"O provedor de IA retornou erro {res.status_code}. Tente novamente."))
-        result = res.json()
-        if result.get("status") != "completed":
-            raise ProviderError("A IA não concluiu a leitura. Tente um documento menor.")
-        output = "".join(c.get("text", "") for x in result.get("output", []) for c in x.get("content", []) if c.get("type") == "output_text")
+        client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        result = await client.aio.models.generate_content(
+            model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+            contents=parts,
+            config=config,
+        )
+        output = result.text or ""
         if not output:
             raise ProviderError("A IA não retornou uma resposta utilizável.")
         return output
-    except (httpx.HTTPError, ValueError) as exc:
+    except ProviderError:
+        raise
+    except Exception as exc:
+        message = str(exc).lower()
+        if "api key" in message or "unauthorized" in message or "permission" in message:
+            raise ProviderError("Chave do Gemini inválida ou sem permissão.") from exc
+        if "quota" in message or "resource exhausted" in message or "429" in message:
+            raise ProviderError("Limite ou cota da API do Gemini atingida. Verifique sua conta e tente novamente.") from exc
         raise ProviderError("Falha de comunicação com a IA. Verifique a conexão e tente novamente.") from exc
 
 def normalized(value):

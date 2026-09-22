@@ -9,7 +9,7 @@ flowchart LR
   U[React / TypeScript] --> A[API Starlette]
   A --> R[Recepção e validação]
   R --> T[PyMuPDF / Pillow]
-  T --> E[Extração multimodal / OpenAI]
+  T --> E[Extração multimodal / Gemini]
   E --> V[Validação Pydantic e evidências]
   V --> D[(SQLite e arquivos locais)]
   D --> C[Comparação determinística]
@@ -51,7 +51,7 @@ SQLite elimina a instalação de um banco separado e é suficiente para o worksp
 
 A leitura híbrida reduz o envio de imagens em PDFs pesquisáveis. A heurística de 80 caracteres pode falhar em páginas com texto decorativo ou OCR ruim. O limite de 20 páginas visuais e 220 mil caracteres evita truncamento silencioso e reduz custos inesperados.
 
-Uma única chamada estruturada por documento mantém o pipeline didático. O modelo padrão é `gpt-4.1-mini`, configurável por `OPENAI_MODEL`. A disponibilidade depende da conta. A comparação determinística mantém diferenças reproduzíveis e evita que uma segunda geração invente um ranking.
+Uma única chamada estruturada por documento mantém o pipeline didático. O modelo padrão é `gemini-3.6-flash`, configurável por `GEMINI_MODEL`. A disponibilidade depende da conta. A comparação determinística mantém diferenças reproduzíveis e evita que uma segunda geração invente um ranking.
 
 A chamada utiliza timeout de 180 segundos e não faz repetição automática que possa duplicar custos. O usuário pode reprocessar um documento com falha. Não há garantia de idempotência no provedor.
 
@@ -74,8 +74,8 @@ Próximos passos: corpus público licenciado com anotações de especialistas, m
 ## Fontes
 
 - Enunciado do Projeto Final I2A2, fornecido pelo usuário, datado de 15/07/2026. Prazo informado: 06/10/2026 às 23h59.
-- OpenAI, Structured Outputs: https://developers.openai.com/api/docs/guides/structured-outputs
-- OpenAI, File inputs: https://developers.openai.com/api/docs/guides/file-inputs
+- Google Gemini API, structured output: https://ai.google.dev/gemini-api/docs/structured-output
+- Google Gemini API, multimodal: https://ai.google.dev/gemini-api/docs/vision
 - Documentos de demonstração: criação sintética autoral do projeto em `backend/demo.py`. Aurora, Vértice e Horizonte são nomes fictícios, sem relação com contratos reais.
 - O endereço do Sebrae informado no enunciado não pôde ser acessado na preparação. O pitch segue o problema, solução, funcionamento, arquitetura, resultados de demonstração e próximos passos.
 - Repositório público: https://github.com/vicTmm/i2a2-desafio-final.
