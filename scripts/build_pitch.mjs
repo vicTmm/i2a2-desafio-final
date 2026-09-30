@@ -73,7 +73,7 @@ text(
   { color: C.muted },
 );
 s.addNotes(
-  "Enunciado do Projeto Final I2A2, fornecido pelo usuário, datado de 15/07/2026. Integrantes: identificação nominal pendente da equipe.",
+  "Enunciado do Projeto Final I2A2, fornecido pelo usuário, datado de 15/07/2026. Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.",
 );
 s = base("O problema da leitura documental", 2);
 text(
@@ -250,7 +250,7 @@ text(
 );
 text(
   s,
-  "Pendente: validar uma chamada real de IA com a chave da equipe.",
+  "Validação funcional: extração real com Gemini em PDFs fictícios. Precisão em apólices de mercado ainda não avaliada.",
   0.7,
   5.02,
   11.7,
@@ -260,7 +260,7 @@ text(
 );
 text(
   s,
-  "Os testes usam respostas controladas. Ainda não há avaliação de precisão em apólices de mercado.",
+  "A precisão em apólices reais ainda requer avaliação especializada.",
   0.7,
   6.08,
   11.7,
@@ -269,7 +269,7 @@ text(
   { color: C.muted },
 );
 s.addNotes(
-  "Resultados da execução local de tests/test_pipeline.py e scripts/check_ui.py. Não houve acesso a credencial de IA. Comparação é textual e revisão humana continua necessária.",
+  "Testes automatizados e fluxo de interface executados. A equipe também validou uma extração real com Gemini usando PDFs fictícios. Isso não mede a precisão em apólices de mercado. A comparação é textual e requer revisão humana.",
 );
 s = base("Próximos passos da equipe", 8);
 text(
@@ -294,16 +294,16 @@ text(
 );
 text(
   s,
-  "Entrega: identificar integrantes, concluir a demonstração com IA e tornar o repositório público.",
+  "Equipe: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.\nRepositório público; avaliação especializada em apólices de mercado pendente.",
   0.7,
   5.47,
   11.5,
   1.1,
-  23,
+  16,
   { color: C.accent },
 );
 s.addNotes(
-  "Prazo do enunciado: 06/10/2026 às 23h59. Repositório público: https://github.com/vicTmm/i2a2-desafio-final. A validação com IA real e a identificação nominal dos integrantes ainda precisam ser concluídas.",
+  "Prazo informado no enunciado: 06/10/2026 às 23h59. Repositório público: https://github.com/vicTmm/i2a2-desafio-final. A equipe testou o fluxo com Gemini em documentos fictícios; a precisão em apólices de mercado ainda requer avaliação especializada.",
 );
 await pptx.writeFile({
   fileName: path.join(out, "InsurMinds_Projeto_Final.pptx"),

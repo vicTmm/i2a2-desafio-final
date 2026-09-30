@@ -19,7 +19,7 @@ flowchart LR
   Q --> U
 ```
 
-O frontend usa React 19, TypeScript, Vite e Lucide. Fontes DM Sans e Manrope são distribuídas localmente. A interface permite navegação por teclado, modais nativos, estados de erro, busca, filtros, seleção limitada e adaptação a dispositivos móveis.
+O frontend usa React 19, TypeScript, Vite, Tailwind CSS 4, shadcn/ui com Radix e Lucide. A fonte DM Sans é distribuída localmente. A interface permite navegação por teclado, diálogos com controle e retorno de foco, estados de erro, busca, filtros, seleção limitada e adaptação a dispositivos móveis. Tokens e padrões visuais estão em `DESIGN.md` e os componentes reutilizáveis em `src/components/ui/`.
 
 A API usa Starlette, uvicorn, Pydantic, SQLite e HTTPX. O servidor tem um único processo e até duas tarefas simultâneas de extração. A fila em memória aceita até seis tarefas pendentes ou ativas. Reinícios marcam trabalhos incompletos como falha, permitindo nova tentativa. Não há fila distribuída nem promessa de alta disponibilidade.
 
@@ -29,11 +29,11 @@ O termo agente designa responsabilidades do pipeline, não uma equipe de agentes
 
 1. Recepção (`backend/app.py`): recebe o arquivo, valida conteúdo, limita tamanho e atribui identificador UUID. Nomes enviados pelo usuário não determinam caminhos de armazenamento.
 2. Leitura (`backend/documents.py`): extrai texto por página. Páginas com menos de 80 caracteres são rasterizadas. Imagens PNG, JPEG e WebP são normalizadas para leitura visual.
-3. Extração (`backend/agents.py`): envia texto e imagens, numerados por página, para a Responses API. Solicita JSON Schema estrito e desabilita armazenamento da resposta com `store: false`.
+3. Extração (`backend/agents.py`): cria um cliente do Google GenAI e envia texto e imagens, numerados por página, com `client.aio.models.generate_content`. Solicita uma resposta JSON de acordo com o schema definido pelo projeto.
 4. Estruturação e validação (`backend/models.py`, `backend/agents.py`): valida tipos, classificação D&O, chaves únicas, páginas e presença literal das citações no texto.
 5. Comparação (`backend/agents.py`): compara os mesmos 16 campos entre dois a quatro documentos. O resultado distingue diferença textual, igualdade textual e dado ausente.
 6. Relatório (`backend/reports.py`): gera PDF com tabela comparativa, limitações e trechos de origem. JSON preserva o resultado estruturado.
-7. Consulta (`backend/app.py`): pergunta e resposta com IA sobre fatos já extraídos. O prompt exige páginas e admite ausência de informação. As citações da resposta livre não têm validador automático.
+7. Consulta (`backend/app.py`): usa `GenerateContent` para responder perguntas sobre fatos já extraídos. O prompt solicita páginas e admite ausência de informação. As citações da resposta livre não têm validador automático.
 
 ## Contrato de dados
 
@@ -53,21 +53,21 @@ A leitura híbrida reduz o envio de imagens em PDFs pesquisáveis. A heurística
 
 Uma única chamada estruturada por documento mantém o pipeline didático. O modelo padrão é `gemini-3.6-flash`, configurável por `GEMINI_MODEL`. A disponibilidade depende da conta. A comparação determinística mantém diferenças reproduzíveis e evita que uma segunda geração invente um ranking.
 
-A chamada utiliza timeout de 180 segundos e não faz repetição automática que possa duplicar custos. O usuário pode reprocessar um documento com falha. Não há garantia de idempotência no provedor.
+O código não define um timeout de aplicação nem uma política própria de repetição automática para chamadas ao modelo. Em caso de falha, o usuário pode solicitar novo processamento. Não há garantia de idempotência no provedor.
 
 ## Limites e proteção de dados
 
 O MVP aceita até 20 MB, 60 páginas PDF, 20 páginas visuais e 220 mil caracteres por documento. PDF criptografado e formatos não reconhecidos são rejeitados. Um documento deve representar uma única apólice e suas condições coerentes.
 
-A chave fica no `.env` do servidor e não é enviada ao navegador. Documentos são dados não confiáveis para o prompt. Não são disponibilizadas ferramentas de execução ao modelo. O servidor não inclui autenticação e deve operar em loopback, em um único processo. Publicação na Internet requer autenticação, isolamento por usuário, quotas, proxy com limite de requisição, políticas de retenção e revisão de segurança.
+A chave fica no `.env` do servidor e não é enviada ao navegador. Documentos são dados não confiáveis para o prompt. Não são disponibilizadas ferramentas de execução ao modelo. O servidor não inclui autenticação e deve operar em loopback, em um único processo. Embora o repositório seja público, a aplicação não deve ser exposta na Internet sem autenticação, isolamento por usuário, quotas, limite de requisições, políticas de retenção e revisão de segurança.
 
-`store: false` não equivale a garantia de retenção zero. O conteúdo é enviado ao provedor de IA conforme a política da conta. Arquivos originais, textos e rasterizações ficam em `data/`; essa pasta não entra no repositório ou no ZIP. O MVP não implementa criptografia em repouso nem exclusão pela interface.
+O código não configura uma política de retenção zero no provedor. O tratamento do conteúdo enviado depende das condições e configurações da conta Gemini. Arquivos originais, textos e rasterizações ficam em `data/`; essa pasta não entra no repositório ou no ZIP. O MVP não implementa criptografia em repouso nem exclusão pela interface.
 
 Condições gerais podem descrever coberturas não contratadas. Exclusões espalhadas por páginas podem não caber em uma única evidência por campo. Valores equivalentes com redações diferentes aparecem como diferenças textuais. Não há normalização atuarial, jurídica ou cambial.
 
 ## Validação e evolução
 
-Testes automatizados cobrem leitura de PDF e imagem, PDFs criptografados, limites, dados ausentes, evidências falsas, persistência, comparação e exportação. O teste de upload com provedor simulado verifica a integração interna, mas não comprova precisão em contratos reais. Uma chamada real com a chave da equipe é condição pendente de validação.
+Testes automatizados cobrem leitura de PDF e imagem, PDFs criptografados, limites, dados ausentes, evidências falsas, persistência, comparação e exportação. O teste automatizado de upload usa um provedor simulado. A equipe também confirmou o fluxo com uma chamada real ao Gemini e documentos fictícios do projeto. Isso não comprova a precisão em apólices reais; essa avaliação requer um conjunto de documentos apropriado e revisão especializada.
 
 Próximos passos: corpus público licenciado com anotações de especialistas, métricas por campo, avaliação de OCR, evidências múltiplas, divisão semântica de documentos longos, revisão editável e versionada, fila durável, autenticação e comparação semântica apoiada nas evidências.
 

@@ -2,11 +2,11 @@
 
 Plataforma de análise e comparação de apólices D&O com IA generativa, desenvolvida para o Projeto Final do Instituto de Inteligência Artificial Aplicada (I2A2), turma 2026.
 
-O MVP recebe PDFs ou imagens, extrai 16 critérios com referências à origem, armazena os resultados e compara de duas a quatro apólices. A interface oferece busca, consulta contextual com IA, histórico e exportação de relatório PDF e dados JSON.
+O MVP recebe PDFs ou imagens, extrai 16 critérios com referências às páginas de origem, armazena os resultados e compara de duas a quatro apólices. Também oferece busca, consulta contextual com IA, histórico e exportação para PDF e JSON.
 
 ## Execução rápida
 
-Requisitos: Node.js 24 e Python 3.14, versões usadas na validação. A extração real requer chave e cota na API do Google Gemini. O modo de exemplos funciona sem chave e utiliza documentos fictícios com resultados pré-preenchidos; ele não cumpre, sozinho, o requisito de processamento por IA generativa.
+Requisitos: Node.js 24 e Python 3.14, versões usadas na validação. O modo de exemplos funciona sem chave e carrega documentos fictícios com resultados pré-preenchidos. Para analisar um arquivo com Gemini, configure uma chave de API.
 
 ```powershell
 npm install
@@ -15,7 +15,11 @@ py -3.14 -m venv .venv
 Copy-Item .env.example .env
 ```
 
-Preencha `GEMINI_API_KEY` em `.env`. Nunca coloque a chave no frontend ou no Git. O modelo padrão é `gemini-3.6-flash`, alterável por `GEMINI_MODEL`. Reinicie a API após editar o ambiente.
+### Como obter e configurar a chave Gemini
+
+Abra o [Google AI Studio](https://aistudio.google.com/api-keys) e consulte a área de chaves de API. Se a chave anterior não estiver disponível para cópia, crie uma nova. Nesta cópia do projeto não há arquivo `.env` configurado; depois de copiá-lo do exemplo, preencha `GEMINI_API_KEY` no `.env` local. Mantenha a chave no servidor: não a inclua no frontend, no Git ou em mensagens. O `.env` é ignorado pelo Git.
+
+O modelo padrão é `gemini-3.6-flash` e pode ser alterado com `GEMINI_MODEL`. Reinicie a API após mudar o ambiente.
 
 No primeiro terminal:
 
@@ -31,7 +35,7 @@ npm run dev
 
 Acesse http://127.0.0.1:5173. Em Linux/macOS, substitua `py -3.14` por `python3`, use `.venv/bin/python` e `cp .env.example .env`.
 
-Para executar apenas um servidor após compilar:
+Para executar com um único servidor após compilar:
 
 ```powershell
 npm run build
@@ -42,13 +46,13 @@ Nesse modo, acesse http://127.0.0.1:8001. O backend serve o conteúdo de `dist/`
 
 ## Demonstração
 
-1. Clique em **Carregar exemplos** na visão geral. Os documentos Aurora e Vértice são fictícios, claramente identificados e não representam ofertas de seguro.
-2. Selecione ambas as apólices e clique em **Comparar apólices**.
-3. Ative o filtro de diferenças, abra o limite de responsabilidade e confira o trecho e a página.
-4. Exporte o PDF e retome o resultado pelo histórico.
-5. Para demonstrar IA real, configure a chave, use **Nova análise** e envie os PDFs de `Projeto_Final_Artefatos/exemplos/`. O upload cria novas análises com chamada ao modelo; carregar exemplos apenas insere fixtures.
+1. Clique em **Carregar exemplos** na visão geral. Aurora e Vértice são apólices fictícias, identificadas na interface; não representam ofertas de seguro.
+2. Selecione as duas apólices e clique em **Comparar apólices**.
+3. Ative o filtro de diferenças, abra o limite de responsabilidade e confira o trecho e a página de origem.
+4. Exporte o PDF e recupere o resultado pelo histórico.
+5. Para demonstrar uma chamada real ao Gemini, configure a chave, abra **Nova análise** e envie um PDF ou imagem. Os arquivos em `Projeto_Final_Artefatos/exemplos/` são materiais fictícios; carregar os exemplos na interface apenas insere dados de demonstração e não chama o modelo.
 
-Os arquivos ficam em `data/`, junto ao SQLite. Eles persistem ao reiniciar. O conteúdo enviado para extração e consulta é processado pelo Google Gemini. O MVP é local, sem login e sem isolamento entre usuários; não o exponha publicamente sem adaptar a arquitetura.
+Os arquivos enviados ficam em `data/`, junto ao SQLite, e permanecem após reiniciar o serviço. O conteúdo usado na extração e na consulta é enviado ao Google Gemini. O MVP é local, não tem autenticação nem separação entre usuários; não o exponha publicamente sem adaptar a arquitetura.
 
 ## Tecnologias e organização
 
@@ -57,14 +61,16 @@ backend/                  API, documentos, IA, comparação, banco e relatórios
 src/                      Interface React, TypeScript e CSS responsivo
 tests/                    Testes de leitura, evidências e integração da API
 scripts/                  Geração de artefatos e verificação no navegador
-docs/                     Arquitetura e roteiro da apresentação
-Projeto_Final_Artefatos/  Relatório técnico, pitch, vídeo e exemplos fictícios
+docs/                     Arquitetura e roteiro para a gravação da equipe
+Projeto_Final_Artefatos/  Relatório técnico, pitch, exemplos fictícios e ZIP
 .github/workflows/        Verificação automatizada do código
 ```
 
-Frontend: React 19, TypeScript, Vite, Lucide, DM Sans e Manrope. Backend: Python, Starlette, uvicorn, Pydantic, Google GenAI SDK, PyMuPDF, Pillow e SQLite. IA: Google Gemini GenerateContent com saída JSON estruturada e leitura multimodal. PDFs: ReportLab. Artefatos: PptxGenJS e FFmpeg. As fontes são locais e não dependem de CDN.
+Frontend: React 19, TypeScript, Vite, Tailwind CSS 4, shadcn/ui (Radix), Lucide e DM Sans. Backend: Python, Starlette, uvicorn, Pydantic, Google GenAI SDK, PyMuPDF, Pillow e SQLite. A integração usa Gemini GenerateContent com resposta JSON estruturada e leitura multimodal. Os relatórios usam ReportLab; os slides, PptxGenJS. As fontes são locais e não dependem de CDN.
 
-Consulte [a arquitetura, decisões e limitações](docs/ARQUITETURA.md). O sistema usa componentes especializados de pipeline, com IA na extração e consulta. A comparação é textual e determinística; igualdade de texto não comprova equivalência jurídica.
+A interface usa tons neutros, navegação compacta e componentes reutilizáveis em `src/components/ui/`. O [sistema visual](DESIGN.md) registra cores, tipografia e padrões de interação. A revisão visual usou [Impeccable](https://github.com/pbakaus/impeccable), a [skill shadcn](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn) e Humanizer para revisar os textos em português.
+
+Consulte [a arquitetura, as decisões e as limitações](docs/ARQUITETURA.md). A comparação é textual e determinística: textos iguais não comprovam equivalência jurídica.
 
 ## Testes
 
@@ -73,32 +79,34 @@ npm run build
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-O teste de navegador é opcional e requer os dois servidores em execução:
+O teste no navegador é opcional e requer os dois servidores em execução:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install playwright
 .\.venv\Scripts\python.exe scripts/check_ui.py
+.\.venv\Scripts\python.exe scripts/check_design.py
 ```
 
-No Windows, usa Edge em modo sem janela. Em Linux, instale o Chromium com `python -m playwright install chromium`. Capturas e resultados temporários ficam em `tmp/ui/`. Os testes do provedor usam respostas simuladas e não consomem API. A precisão de extração em contratos reais ainda precisa de avaliação por especialistas.
+No Windows, o navegador usa Edge em modo sem janela. Em Linux, instale Chromium com `python -m playwright install chromium`. Capturas e resultados temporários ficam em `tmp/ui/`. Os testes do provedor usam respostas simuladas e não consomem a API. A precisão da extração em contratos reais ainda precisa ser avaliada por especialistas.
 
-## Entregáveis e situação da entrega
+`check_design.py` percorre estados de upload e erro, navegação por teclado, retorno de foco, contraste e telas de 320 a 1440 pixels. Capturas e resultados de acessibilidade ficam em `tmp/design-review/`. Os testes de navegador carregam exemplos e salvam comparações; para executá-los sem alterar sua biblioteca, inicie a API com `DATA_DIR` apontando para uma pasta temporária.
+
+## Entregáveis e situação
 
 - [Relatório técnico](Projeto_Final_Artefatos/InsurMinds_Relatorio_Tecnico.pdf).
 - [Pitch Deck](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.pptx).
-- [Vídeo de demonstração](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.mp4).
-- [Roteiro e instruções de gravação](docs/ROTEIRO.md).
-- Código-fonte e artefatos em `Projeto_Final_Artefatos/InsurMinds_Codigo_Fonte.zip`, gerado por `python scripts/build_delivery.py`.
-- Repositório público: https://github.com/vicTmm/i2a2-desafio-final.
+- [Roteiro para gravação](docs/ROTEIRO.md). O vídeo anterior foi removido e será gravado pela equipe.
+- Código-fonte e materiais em `Projeto_Final_Artefatos/InsurMinds_Codigo_Fonte.zip`. Para atualizar o ZIP: `py -3.14 scripts/build_delivery.py --zip-only`.
+- Repositório público: https://github.com/vicTmm/i2a2-desafio-final. A equipe concluiu os testes funcionais desta versão; a precisão em apólices reais ainda requer avaliação especializada.
 
-A demonstração gravada utiliza exemplos fictícios e identifica essa condição na própria interface. Para apresentar uma execução real de IA, configure `GEMINI_API_KEY`, processe documentos próprios e grave uma nova demonstração. Nenhum resultado simulado deve ser apresentado como execução real de IA.
+O fluxo de extração foi testado com o Gemini usando os documentos fictícios do projeto. Isso confirma o funcionamento da integração, mas não mede a precisão em apólices reais de mercado; essa avaliação ainda requer revisão especializada.
 
 Prazo informado no enunciado: **06/10/2026 às 23h59**.
 
 ## Integrantes
 
-Equipe: **InsurMinds**. Nomes completos dos integrantes: **pendentes de informação da equipe**. Atualizar esta seção antes de entregar.
+Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.
 
 ## Licença
 
-Código-fonte sob [licença MIT](LICENSE). Os exemplos são sintéticos e autorais. Dependências e fontes preservam suas próprias licenças. Não há apólices reais de terceiros incluídas no repositório.
+O código-fonte está sob [licença MIT](LICENSE). Os exemplos são sintéticos e autorais. Dependências e fontes mantêm suas próprias licenças. O repositório não inclui apólices reais de terceiros.
