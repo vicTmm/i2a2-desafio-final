@@ -34,6 +34,24 @@ import {
   Layers3,
 } from "lucide-react";
 import type { Fact, Policy, Comparison, Health } from "./types";
+import { Button } from "./components/ui/button";
+import { Badge } from "./components/ui/badge";
+import { Skeleton } from "./components/ui/skeleton";
+import { Alert, AlertDescription, AlertAction } from "./components/ui/alert";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from "./components/ui/empty";
+import {
+  Dialog as DialogRoot,
+  DialogContent,
+  DialogTitle,
+} from "./components/ui/dialog";
+import { cn } from "./lib/utils";
 import "./styles.css";
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
@@ -85,33 +103,30 @@ function Dialog({
   label: string;
   wide?: boolean;
 }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    ref.current?.showModal();
-    const old = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = old;
-    };
-  }, []);
+  const returnFocus = useRef(document.activeElement as HTMLElement | null);
   return (
-    <dialog
-      ref={ref}
-      className={wide ? "dialog wide" : "dialog"}
-      aria-label={label}
-      onCancel={onClose}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+    <DialogRoot
+      open
+      onOpenChange={(open) => {
+        if (!open) onClose();
       }}
     >
-      <div className="dialog-head">
-        <span className="eyebrow">{label}</span>
-        <button className="icon-button" onClick={onClose} aria-label="Fechar">
-          <X size={20} />
-        </button>
-      </div>
-      {children}
-    </dialog>
+      <DialogContent
+        className={cn(
+          "max-h-[90dvh] overflow-y-auto p-6 sm:max-w-xl",
+          wide && "sm:max-w-4xl",
+          !wide && "upload-dialog",
+        )}
+        aria-describedby={undefined}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          if (returnFocus.current?.isConnected) returnFocus.current.focus();
+        }}
+      >
+        <DialogTitle className="sr-only">{label}</DialogTitle>
+        {children}
+      </DialogContent>
+    </DialogRoot>
   );
 }
 
@@ -162,6 +177,14 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
+  useEffect(() => {
+    const viewport = window.matchMedia("(min-width: 701px)");
+    const closeOnDesktop = () => {
+      if (viewport.matches) setMobileOpen(false);
+    };
+    viewport.addEventListener("change", closeOnDesktop);
+    return () => viewport.removeEventListener("change", closeOnDesktop);
+  }, []);
   useEffect(() => {
     if (!processing.length) return;
     const timer = setInterval(() => void refresh(), 2500);
@@ -297,162 +320,181 @@ function App() {
                       <strong>{p.title}</strong>
                       <small>
                         {getFact(p, "insurer") || p.filename}
-                        {p.demo && <span className="demo-tag">Exemplo</span>}
+                        {p.demo && <Badge variant="outline">Exemplo</Badge>}
                       </small>
                     </span>
                   </button>
                 </td>
                 <td>
-                  <span className={"status " + p.status}>
+                  <Badge
+                    variant={p.status === "error" ? "destructive" : "secondary"}
+                  >
                     {p.status === "ready" ? (
-                      <span className="status-dot" />
+                      <Check />
                     ) : p.status === "error" ? (
-                      <CircleAlert size={12} />
+                      <CircleAlert />
                     ) : (
-                      <LoaderCircle className="spin" size={12} />
-                    )}{" "}
+                      <LoaderCircle className="spin" />
+                    )}
                     {statuses[p.status]}
-                  </span>
+                  </Badge>
                 </td>
                 <td className="money">
                   {getFact(p, "limit")?.replace("BRL", "R$") || "—"}
                 </td>
                 {!compact && <td className="muted">{date(p.created_at)}</td>}
                 <td>
-                  <button
-                    className="icon-button"
+                  <Button
+                    variant="ghost"
+                    size="icon"
+
                     aria-label={"Ver " + p.title}
                     onClick={() => void openDetail(p)}
                   >
-                    <ArrowUpRight size={17} />
-                  </button>
+                    <ArrowUpRight data-icon="inline-start" />
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         {!displayed.length && (
-          <div className="empty-state">
-            <Files size={30} />
-            <h3>
-              {query || filter !== "all"
-                ? "Nenhuma apólice encontrada"
-                : "Sua biblioteca começa aqui"}
-            </h3>
-            <p>
-              {query || filter !== "all"
-                ? "Experimente outro termo ou filtro."
-                : "Envie um documento ou explore os dois exemplos fictícios."}
-            </p>
-            {!query && filter === "all" && (
-              <button
-                className="text-button"
-                onClick={() => void loadDemo()}
-                disabled={busy}
-              >
-                Explorar exemplos <ArrowRight size={15} />
-              </button>
-            )}
-          </div>
+          <Empty className="py-14">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Files />
+              </EmptyMedia>
+              <EmptyTitle>
+                {query || filter !== "all"
+                  ? "Nenhuma apólice encontrada"
+                  : "Adicione sua primeira apólice"}
+              </EmptyTitle>
+              <EmptyDescription>
+                {query || filter !== "all"
+                  ? "Experimente outro termo ou limpe os filtros."
+                  : "Envie um PDF ou uma imagem para extrair os dados e conferir as evidências."}
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              {query || filter !== "all" ? (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setQuery("");
+                    setFilter("all");
+                  }}
+                >
+                  Limpar filtros
+                </Button>
+              ) : (
+                <Button variant="outline" onClick={() => setUploadOpen(true)}>
+                  <Upload data-icon="inline-start" />
+                  Enviar documento
+                </Button>
+              )}
+            </EmptyContent>
+          </Empty>
         )}
       </div>
     );
   }
 
+  const navigation = (
+    <>
+      <a
+        className="brand"
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("overview");
+        }}
+      >
+        <span className="brand-mark">
+          <ShieldCheck size={25} />
+        </span>
+        InsurMinds<span className="brand-dot">.</span>
+      </a>
+      <div className="workspace">
+        <span className="workspace-avatar">IM</span>
+        <div>
+          <strong>InsurMinds D&O</strong>
+          <small>I2A2 · Turma 2026</small>
+        </div>
+        <Layers3 size={16} />
+      </div>
+      <span className="nav-caption">PLATAFORMA</span>
+      <nav aria-label="Navegação principal">
+        {navItems.map((n) => (
+          <button
+            key={n.id}
+            className={cn("nav-item", page === n.id && "active")}
+            aria-current={page === n.id ? "page" : undefined}
+            onClick={() => navigate(n.id)}
+          >
+            <n.icon size={19} />
+            <span>{n.label}</span>
+            {n.id === "policies" && (
+              <span className="nav-count">{policies.length}</span>
+            )}
+          </button>
+        ))}
+      </nav>
+      <div className="sidebar-bottom">
+        <button
+          className={cn("nav-item", page === "settings" && "active")}
+          aria-current={page === "settings" ? "page" : undefined}
+          onClick={() => navigate("settings")}
+        >
+          <Settings2 size={18} />
+          Configurações
+        </button>
+        <button className="nav-item" onClick={() => navigate("guide")}>
+          <CircleHelp size={18} />
+          Guia de uso
+        </button>
+        <div className="profile">
+          <span className="profile-avatar">IM</span>
+          <div>
+            <strong>Equipe InsurMinds</strong>
+            <small>Projeto acadêmico</small>
+          </div>
+          <span className="local-dot" title="Ambiente local" />
+        </div>
+      </div>
+    </>
+  );
   return (
     <div className="app-shell">
-      <aside className={"sidebar " + (mobileOpen ? "open" : "")}>
-        <a
-          className="brand"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("overview");
+      <a className="skip-link" href="#main-content">
+        Ir para o conteúdo
+      </a>
+      <aside className="sidebar desktop-sidebar">{navigation}</aside>
+      <DialogRoot open={mobileOpen} onOpenChange={setMobileOpen}>
+        <DialogContent
+          className="left-0 top-0 h-dvh w-64 max-w-64 translate-x-0 translate-y-0 rounded-none p-0 sm:max-w-64"
+          aria-describedby={undefined}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            document.getElementById("mobile-nav-trigger")?.focus();
           }}
         >
-          <span className="brand-mark">
-            <ShieldCheck size={25} />
-          </span>
-          InsurMinds<span className="brand-dot">.</span>
-        </a>
-        <div className="workspace">
-          <span className="workspace-avatar">IM</span>
-          <div>
-            <strong>Workspace do projeto</strong>
-            <small>I2A2 · Turma 2026</small>
-          </div>
-          <Layers3 size={16} />
-        </div>
-        <span className="nav-caption">PLATAFORMA</span>
-        <nav aria-label="Navegação principal">
-          {navItems.map((n) => (
-            <button
-              key={n.id}
-              className={"nav-item " + (page === n.id ? "active" : "")}
-              onClick={() => navigate(n.id)}
-            >
-              <n.icon size={19} />
-              <span>{n.label}</span>
-              {n.id === "policies" && (
-                <span className="nav-count">{policies.length}</span>
-              )}
-            </button>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="sidebar-note">
-            <span className="note-icon">
-              <Sparkles size={18} />
-            </span>
-            <h4>
-              Uma nova perspectiva
-              <br />
-              sobre suas apólices.
-            </h4>
-            <p>Transforme documentos em informações para sua análise.</p>
-            <button onClick={() => navigate("guide")}>
-              Conheça o processo <ArrowUpRight size={15} />
-            </button>
-          </div>
-          <button
-            className={"nav-item " + (page === "settings" ? "active" : "")}
-            onClick={() => navigate("settings")}
-          >
-            <Settings2 size={18} />
-            Configurações
-          </button>
-          <button className="nav-item" onClick={() => navigate("guide")}>
-            <CircleHelp size={18} />
-            Guia de uso
-          </button>
-          <div className="profile">
-            <span className="profile-avatar">IM</span>
-            <div>
-              <strong>Equipe InsurMinds</strong>
-              <small>Projeto acadêmico</small>
-            </div>
-            <span className="local-dot" title="Ambiente local" />
-          </div>
-        </div>
-      </aside>
-      {mobileOpen && (
-        <button
-          className="nav-backdrop"
-          aria-label="Fechar navegação"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+          <DialogTitle className="sr-only">Navegação</DialogTitle>
+          <div className="sidebar mobile-sidebar">{navigation}</div>
+        </DialogContent>
+      </DialogRoot>
       <div className="main-shell">
         <header className="topbar">
           <div className="breadcrumb">
             <button
+              id="mobile-nav-trigger"
               className="icon-button mobile-menu"
+              aria-expanded={mobileOpen}
               aria-label="Abrir navegação"
               onClick={() => setMobileOpen(true)}
             >
               <Menu size={20} />
             </button>
-            <span>Workspace</span>
+            <span>InsurMinds</span>
             <ChevronRight size={14} />
             <strong>
               {navItems.find((n) => n.id === page)?.label ||
@@ -460,40 +502,62 @@ function App() {
             </strong>
           </div>
           <div className="topbar-right">
-            <span className="project-label">PROJETO FINAL · I2A2</span>
+            <Badge variant="outline" className="hidden md:inline-flex">
+              Ambiente local
+            </Badge>
             <span className="topbar-divider" />
-            <button
-              className="icon-button"
+            <Button
+              variant="ghost"
+              size="icon"
+
               title="Guia de uso"
               aria-label="Guia de uso"
               onClick={() => navigate("guide")}
             >
-              <CircleHelp size={18} />
-            </button>
+              <CircleHelp data-icon="inline-start" />
+            </Button>
             <span className="small-avatar">IM</span>
           </div>
         </header>
-        <main id="main-content">
+        <main id="main-content" tabIndex={-1}>
           {error && (
-            <div className="error-banner" role="alert">
+            <Alert variant="destructive" className="mb-6">
               <CircleAlert size={18} />
-              <span>{error}</span>
-              <button className="text-button" onClick={() => void refresh()}>
-                Tentar novamente
-              </button>
-              <button
-                className="icon-button"
-                aria-label="Dispensar erro"
-                onClick={() => setError("")}
-              >
-                <X size={16} />
-              </button>
-            </div>
+              <AlertDescription>
+                <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
+                  <span>{error}</span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => void refresh()}
+                  >
+                    Tentar novamente
+                  </Button>
+                </div>
+              </AlertDescription>
+              <AlertAction>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Dispensar erro"
+                  onClick={() => setError("")}
+                >
+                  <X />
+                </Button>
+              </AlertAction>
+            </Alert>
           )}
           {loading ? (
-            <div className="loading">
-              <LoaderCircle className="spin" />
-              Carregando seu workspace…
+            <div
+              className="workspace-loading"
+              role="status"
+              aria-label="Carregando documentos"
+            >
+              <Skeleton className="h-8 w-48" />
+              <Skeleton className="h-4 w-72 max-w-full" />
+              <Skeleton className="my-6 h-20 w-full" />
+              <Skeleton className="h-64 w-full" />
+              <span className="sr-only">Carregando documentos…</span>
             </div>
           ) : (
             <>
@@ -501,194 +565,112 @@ function App() {
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">INTELIGÊNCIA EM SEGUROS D&O</div>
-                      <h1>
-                        Visão geral<span className="heading-dot">.</span>
-                      </h1>
-                      <p>
-                        Menos tempo entre documentos. Mais clareza na sua
-                        análise.
-                      </p>
+                      <h1>Visão geral</h1>
+                      <p>Acompanhe suas análises e confira os documentos.</p>
                     </div>
-                    <button
-                      className="primary"
-                      onClick={() => setUploadOpen(true)}
-                    >
-                      <Plus size={18} />
+                    <Button onClick={() => setUploadOpen(true)}>
+                      <Plus data-icon="inline-start" />
                       Nova análise
-                    </button>
+                    </Button>
                   </div>
-                  <section className="hero">
-                    <div className="hero-copy">
-                      <span className="hero-label">
-                        <span /> ANÁLISE ASSISTIDA POR IA
-                      </span>
-                      <h2>
-                        Os detalhes fazem
-                        <br />
-                        toda a diferença.
-                      </h2>
-                      <p>
-                        Compare coberturas, identifique diferenças e
-                        <br className="desktop-break" /> encontre as evidências
-                        em cada apólice.
-                      </p>
-                      <button
-                        className="hero-button"
-                        onClick={() => {
-                          navigate("compare");
-                          setComparison(null);
-                        }}
-                      >
-                        Comparar apólices <ArrowRight size={17} />
-                      </button>
-                    </div>
-                    <div className="hero-art" aria-hidden="true">
-                      <div className="orbit orbit-one" />
-                      <div className="orbit orbit-two" />
-                      <div className="art-card art-back">
-                        <div className="art-card-title">
-                          <div className="art-logo pale" />
-                          <span>APÓLICE B</span>
-                          <Check size={13} />
-                        </div>
-                        <div className="art-line long" />
-                        <div className="art-line" />
-                        <div className="art-value">D&O</div>
-                        <div className="art-separator" />
-                        <div className="art-line long" />
-                        <div className="art-line short" />
-                      </div>
-                      <div className="art-card art-front">
-                        <div className="art-card-title">
-                          <div className="art-logo" />
-                          <span>APÓLICE A</span>
-                          <Check size={13} />
-                        </div>
-                        <div className="art-line long" />
-                        <div className="art-line" />
-                        <div className="art-value">D&O</div>
-                        <div className="art-separator" />
-                        <div className="art-row">
-                          <div className="art-line long" />
-                          <span className="art-check">
-                            <Check size={12} />
-                          </span>
-                        </div>
-                        <div className="art-row">
-                          <div className="art-line" />
-                          <span className="art-check">
-                            <Check size={12} />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="art-spark">
-                        <Sparkles size={26} />
-                      </div>
-                      <span className="art-caption">
-                        <Link2 size={13} /> Cada informação, uma evidência.
-                      </span>
-                    </div>
-                  </section>
                   <section
-                    className="metrics"
+                    className="workspace-summary"
                     aria-label="Indicadores do workspace"
                   >
-                    {[
-                      {
-                        label: "Apólices na biblioteca",
-                        value: policies.length,
-                        icon: Files,
-                        sub: "Documentos organizados",
-                      },
-                      {
-                        label: "Análises concluídas",
-                        value: ready.length,
-                        icon: ScanText,
-                        sub: processing.length
-                          ? `${processing.length} em processamento`
-                          : "Prontas para consultar",
-                      },
-                      {
-                        label: "Comparações realizadas",
-                        value: history.length,
-                        icon: Columns3,
-                        sub: "Salvas no seu histórico",
-                      },
-                      {
-                        label: "Critérios por comparação",
-                        value: 16,
-                        icon: CheckCheck,
-                        sub: "Com referência à origem",
-                      },
-                    ].map((m, i) => (
-                      <div className="metric" key={m.label}>
-                        <div className="metric-top">
-                          <span>{m.label}</span>
-                          <m.icon size={18} />
-                        </div>
-                        <strong>{String(m.value).padStart(2, "0")}</strong>
-                        <small>
-                          {i === 1 && <span className="tiny-dot" />}
-                          {m.sub}
-                        </small>
-                      </div>
-                    ))}
+                    <div>
+                      <span>Apólices</span>
+                      <strong>{policies.length}</strong>
+                    </div>
+                    <div>
+                      <span>Analisadas</span>
+                      <strong>{ready.length}</strong>
+                    </div>
+                    <div>
+                      <span>Comparações</span>
+                      <strong>{history.length}</strong>
+                    </div>
+                    <div>
+                      <span>Critérios por apólice</span>
+                      <strong>16</strong>
+                    </div>
                   </section>
+                  {processing.length > 0 && (
+                    <Alert className="mb-6">
+                      <LoaderCircle className="spin" />
+                      <AlertDescription>
+                        {processing.length} documento(s) em análise. Você pode
+                        continuar usando a biblioteca.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
                   <section className="library-section">
                     <div className="section-heading">
                       <div>
                         <h2>
                           Apólices recentes{" "}
-                          <span className="count-badge">{policies.length}</span>
+                          <Badge variant="secondary">{policies.length}</Badge>
                         </h2>
-                        <p>Seus documentos, organizados em um só lugar.</p>
+                        <p>
+                          Abra uma apólice para conferir os dados ou selecione
+                          para comparar.
+                        </p>
                       </div>
-                      <button
-                        className="text-button"
+                      <Button
+                        variant="ghost"
+
                         onClick={() => navigate("policies")}
                       >
-                        Ver todas <ArrowRight size={16} />
-                      </button>
+                        Ver todas <ArrowRight data-icon="inline-start" />
+                      </Button>
                     </div>
                     {policyTable(true)}
                   </section>
-                  <section className="bottom-grid">
-                    <button
-                      className="upload-promo"
-                      onClick={() => setUploadOpen(true)}
-                    >
-                      <span className="upload-symbol">
-                        <Upload size={24} />
-                      </span>
+                  <section
+                    className="workspace-help"
+                    aria-label="Começar a usar"
+                  >
+                    <div>
+                      <BookOpen size={18} aria-hidden="true" />
                       <div>
-                        <h3>Da apólice à análise</h3>
+                        <h3>Experimente com exemplos</h3>
                         <p>
-                          Adicione PDFs ou imagens e deixe a IA organizar as
-                          informações.
+                          Duas apólices fictícias para conhecer a comparação. Os
+                          dados já estão preenchidos.
                         </p>
-                        <span>
-                          Enviar documentos <ArrowUpRight size={14} />
-                        </span>
                       </div>
-                      <Plus size={20} />
-                    </button>
-                    <div className="demo-promo">
-                      <span className="eyebrow">EXPLORE NA PRÁTICA</span>
-                      <h3>Primeira vez por aqui?</h3>
-                      <p>Conheça a comparação com duas apólices fictícias.</p>
-                      <button
-                        className="text-button"
+                      <Button
+                        variant="outline"
                         onClick={() => void loadDemo()}
                         disabled={busy}
                       >
-                        {busy ? (
-                          <LoaderCircle className="spin" size={15} />
-                        ) : (
-                          <BookOpen size={15} />
-                        )}{" "}
-                        Carregar exemplos <ArrowRight size={15} />
-                      </button>
+                        {busy && (
+                          <LoaderCircle
+                            className="spin"
+                            data-icon="inline-start"
+                          />
+                        )}
+                        Carregar exemplos
+                      </Button>
+                    </div>
+                    <div>
+                      <Columns3 size={18} aria-hidden="true" />
+                      <div>
+                        <h3>Compare de 2 a 4 apólices</h3>
+                        <p>
+                          Selecione os documentos e confira as diferenças com os
+                          trechos de origem.
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          navigate("compare");
+                          setComparison(null);
+                        }}
+                      >
+                        Comparar apólices <ArrowRight data-icon="inline-end" />
+                      </Button>
                     </div>
                   </section>
                 </>
@@ -697,23 +679,16 @@ function App() {
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">SEUS DOCUMENTOS</div>
-                      <h1>
-                        Biblioteca de apólices
-                        <span className="heading-dot">.</span>
-                      </h1>
+                      <h1>Biblioteca de apólices</h1>
                       <p>
                         Consulte as informações e confira a origem de cada
                         extração.
                       </p>
                     </div>
-                    <button
-                      className="primary"
-                      onClick={() => setUploadOpen(true)}
-                    >
-                      <Plus size={18} />
+                    <Button onClick={() => setUploadOpen(true)}>
+                      <Plus data-icon="inline-start" />
                       Nova análise
-                    </button>
+                    </Button>
                   </div>
                   <div className="toolbar">
                     <label className="search">
@@ -756,37 +731,37 @@ function App() {
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">ANÁLISE LADO A LADO</div>
-                      <h1>
-                        Comparar apólices<span className="heading-dot">.</span>
-                      </h1>
+                      <h1>Comparar apólices</h1>
                       <p>
                         Entenda as diferenças e confira as condições de cada
                         documento.
                       </p>
                     </div>
                     {comparison ? (
-                      <button
-                        className="secondary"
+                      <Button
+                        variant="outline"
+
                         onClick={() => setComparison(null)}
                       >
-                        <Plus size={17} />
+                        <Plus data-icon="inline-start" />
                         Nova comparação
-                      </button>
+                      </Button>
                     ) : (
-                      <button
-                        className="primary"
+                      <Button
                         disabled={selected.length < 2 || busy}
                         onClick={() => void compare()}
                       >
                         {busy ? (
-                          <LoaderCircle className="spin" size={17} />
+                          <LoaderCircle
+                            className="spin"
+                            data-icon="inline-start"
+                          />
                         ) : (
                           <Columns3 size={17} />
                         )}
                         Comparar{" "}
                         {selected.length > 0 ? `(${selected.length})` : ""}
-                      </button>
+                      </Button>
                     )}
                   </div>
                   {!comparison ? (
@@ -849,13 +824,14 @@ function App() {
                             Envie seus documentos ou carregue os exemplos para
                             experimentar.
                           </p>
-                          <button
-                            className="secondary"
+                          <Button
+                            variant="outline"
+
                             disabled={busy}
                             onClick={() => void loadDemo()}
                           >
                             Carregar exemplos fictícios
-                          </button>
+                          </Button>
                         </div>
                       )}
                       <div className="info-note">
@@ -874,7 +850,6 @@ function App() {
                           <Sparkles size={22} />
                         </div>
                         <div>
-                          <span className="eyebrow">RESUMO DA COMPARAÇÃO</span>
                           <p>{comparison.summary}</p>
                           {comparison.policies.some((p) => p.demo) && (
                             <small>
@@ -883,13 +858,16 @@ function App() {
                             </small>
                           )}
                         </div>
-                        <a
-                          className="secondary"
-                          href={"/api/comparisons/" + comparison.id + "/export"}
-                        >
-                          <Download size={16} />
-                          Exportar PDF
-                        </a>
+                        <Button variant="outline" asChild>
+                          <a
+                            href={
+                              "/api/comparisons/" + comparison.id + "/export"
+                            }
+                          >
+                            <Download data-icon="inline-start" />
+                            Exportar PDF
+                          </a>
+                        </Button>
                       </div>
                       <div className="toolbar">
                         <div className="group-tabs">
@@ -1019,25 +997,21 @@ function App() {
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">REGISTRO DAS ANÁLISES</div>
-                      <h1>
-                        Histórico<span className="heading-dot">.</span>
-                      </h1>
+                      <h1>Histórico</h1>
                       <p>
                         Retome comparações e exporte os resultados quando
                         precisar.
                       </p>
                     </div>
-                    <button
-                      className="primary"
+                    <Button
                       onClick={() => {
                         navigate("compare");
                         setComparison(null);
                       }}
                     >
-                      <Plus size={17} />
+                      <Plus data-icon="inline-start" />
                       Nova comparação
-                    </button>
+                    </Button>
                   </div>
                   <div className="history-list">
                     {history.map((c) => (
@@ -1064,8 +1038,9 @@ function App() {
                         >
                           <Download size={18} />
                         </a>
-                        <button
-                          className="secondary"
+                        <Button
+                          variant="outline"
+
                           onClick={() => {
                             setComparison(c);
                             setPage("compare");
@@ -1073,8 +1048,8 @@ function App() {
                             setGroup("Todos os critérios");
                           }}
                         >
-                          Abrir <ArrowRight size={15} />
-                        </button>
+                          Abrir <ArrowRight data-icon="inline-start" />
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -1085,12 +1060,14 @@ function App() {
                       <p>
                         Compare duas apólices para salvar sua primeira análise.
                       </p>
-                      <button
-                        className="text-button"
+                      <Button
+                        variant="ghost"
+
                         onClick={() => navigate("compare")}
                       >
-                        Começar comparação <ArrowRight size={15} />
-                      </button>
+                        Começar comparação{" "}
+                        <ArrowRight data-icon="inline-start" />
+                      </Button>
                     </div>
                   )}
                 </>
@@ -1099,10 +1076,7 @@ function App() {
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">AMBIENTE DO PROJETO</div>
-                      <h1>
-                        Configurações<span className="heading-dot">.</span>
-                      </h1>
+                      <h1>Configurações</h1>
                       <p>Informações sobre processamento e armazenamento.</p>
                     </div>
                   </div>
@@ -1112,7 +1086,7 @@ function App() {
                         <Sparkles size={22} />
                       </span>
                       <div>
-                        <h3>Integração com OpenAI</h3>
+                        <h3>Integração com Gemini</h3>
                         <p>Modelo configurado: {health?.model}</p>
                       </div>
                       <span
@@ -1130,19 +1104,20 @@ function App() {
                       <p>
                         Para analisar novos documentos, copie{" "}
                         <code>.env.example</code> para <code>.env</code> na
-                        pasta do projeto e preencha <code>OPENAI_API_KEY</code>.
+                        pasta do projeto e preencha <code>GEMINI_API_KEY</code>.
                         Reinicie a API após a alteração.
                       </p>
                       <p>
                         A chave fica no servidor. O conteúdo enviado para
-                        análise é processado pela API da OpenAI.
+                        análise é processado pela API do Google Gemini.
                       </p>
-                      <button
-                        className="secondary"
+                      <Button
+                        variant="outline"
+
                         onClick={() => void refresh()}
                       >
                         Atualizar status
-                      </button>
+                      </Button>
                     </div>
                   </div>
                   <div className="settings-panel">
@@ -1160,7 +1135,7 @@ function App() {
                       <p>
                         Os documentos e as comparações persistem ao reiniciar o
                         aplicativo. Este MVP foi projetado para uma demonstração
-                        local com um workspace compartilhado.
+                        local com um ambiente compartilhado.
                       </p>
                     </div>
                   </div>
@@ -1170,14 +1145,10 @@ function App() {
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">COMO FUNCIONA</div>
-                      <h1>
-                        Da leitura à comparação
-                        <span className="heading-dot">.</span>
-                      </h1>
+                      <h1>Da leitura à comparação</h1>
                       <p>
-                        Um processo simples, com evidências que você pode
-                        conferir.
+                        Envie os documentos, confira os dados e compare as
+                        apólices.
                       </p>
                     </div>
                   </div>
@@ -1223,13 +1194,10 @@ function App() {
                       cobertura.
                     </p>
                   </div>
-                  <button
-                    className="primary"
-                    onClick={() => setUploadOpen(true)}
-                  >
-                    <Plus size={17} />
+                  <Button onClick={() => setUploadOpen(true)}>
+                    <Plus data-icon="inline-start" />
                     Começar uma análise
-                  </button>
+                  </Button>
                 </>
               )}
             </>
@@ -1237,7 +1205,7 @@ function App() {
           <footer className="page-footer">
             <span>
               <ShieldCheck size={14} />
-              InsurMinds · Inteligência com evidência.
+              InsurMinds · Análise de apólices D&O
             </span>
             <span>
               MVP acadêmico <span className="footer-dot">·</span> I2A2 2026
@@ -1252,34 +1220,35 @@ function App() {
             {selected.length > 1 ? "s" : ""} selecionada
             {selected.length > 1 ? "s" : ""}
           </span>
-          <button className="text-button" onClick={() => setSelected([])}>
+          <Button variant="ghost" onClick={() => setSelected([])}>
             Limpar
-          </button>
-          <button
-            className="primary"
+          </Button>
+          <Button
             disabled={selected.length < 2 || busy}
             onClick={() => void compare()}
           >
             {busy ? (
-              <LoaderCircle className="spin" size={16} />
+              <LoaderCircle className="spin" data-icon="inline-start" />
             ) : (
               <Columns3 size={16} />
             )}
-            Comparar apólices <ArrowRight size={15} />
-          </button>
+            Comparar apólices <ArrowRight data-icon="inline-start" />
+          </Button>
         </div>
       )}
       {toast && (
         <div className="toast" role="status">
           <CircleCheck size={19} />
           {toast}
-          <button
-            className="icon-button"
+          <Button
+            variant="ghost"
+            size="icon"
+
             aria-label="Fechar notificação"
             onClick={() => setToast("")}
           >
             <X size={16} />
-          </button>
+          </Button>
         </div>
       )}
       {uploadOpen && (
@@ -1370,25 +1339,24 @@ function UploadDialog({
   }
   return (
     <Dialog
-      label="NOVA ANÁLISE"
+      label="Nova análise"
       onClose={() => {
         if (!uploading) onClose();
       }}
     >
-      <h2>
-        Adicione suas apólices<span className="heading-dot">.</span>
-      </h2>
+      <h2>Adicione suas apólices</h2>
       <p className="dialog-description">
-        A IA organiza as informações para você comparar.
+        Envie até 4 arquivos por vez. Você poderá conferir cada informação no
+        documento original.
       </p>
       {!configured && (
         <div className="info-note compact">
           <CircleAlert size={19} />
           <p>
             A chave de IA ainda não foi configurada no servidor.{" "}
-            <button className="inline-link" onClick={() => void onDemo()}>
+            <Button variant="link" onClick={() => void onDemo()}>
               Explorar exemplos fictícios
-            </button>
+            </Button>
           </p>
         </div>
       )}
@@ -1433,14 +1401,16 @@ function UploadDialog({
                 <strong>{f.name}</strong>
                 <small>{(f.size / 1024 / 1024).toFixed(2)} MB</small>
               </span>
-              <button
-                className="icon-button"
+              <Button
+                variant="ghost"
+                size="icon"
+
                 disabled={uploading}
                 onClick={() => setFiles((s) => s.filter((_, n) => n !== i))}
                 aria-label={"Remover " + f.name}
               >
                 <X size={16} />
-              </button>
+              </Button>
             </div>
           ))}
         </div>
@@ -1452,25 +1422,24 @@ function UploadDialog({
       )}
       <p className="upload-consent">
         <ShieldCheck size={15} />
-        Ao analisar, o conteúdo dos documentos será enviado à OpenAI. Os
-        arquivos ficam salvos neste workspace local.
+        Ao analisar, o conteúdo dos documentos será enviado ao Google Gemini. Os
+        arquivos ficam salvos neste ambiente local.
       </p>
       <div className="dialog-actions">
-        <button className="secondary" disabled={uploading} onClick={onClose}>
+        <Button variant="outline" disabled={uploading} onClick={onClose}>
           Cancelar
-        </button>
-        <button
-          className="primary"
+        </Button>
+        <Button
           disabled={!configured || !files.length || uploading}
           onClick={() => void send()}
         >
           {uploading ? (
-            <LoaderCircle className="spin" size={17} />
+            <LoaderCircle className="spin" data-icon="inline-start" />
           ) : (
-            <Sparkles size={17} />
+            <Sparkles data-icon="inline-start" />
           )}{" "}
           {uploading ? "Enviando…" : "Analisar documentos"}
-        </button>
+        </Button>
       </div>
     </Dialog>
   );
@@ -1513,7 +1482,7 @@ function DetailDialog({
     }
   }
   return (
-    <Dialog label="DETALHES DA APÓLICE" wide onClose={onClose}>
+    <Dialog label="Detalhes da apólice" wide onClose={onClose}>
       <div className="detail-title">
         <span className="file-symbol">
           <FileText size={25} />
@@ -1551,9 +1520,7 @@ function DetailDialog({
           <CircleAlert size={30} />
           <h3>A análise não foi concluída</h3>
           <p>{policy.error}</p>
-          <button className="primary" onClick={() => void onRetry()}>
-            Tentar novamente
-          </button>
+          <Button onClick={() => void onRetry()}>Tentar novamente</Button>
         </div>
       ) : policy.status !== "ready" ? (
         <div className="empty-state">
@@ -1627,7 +1594,12 @@ function DetailDialog({
                   Abrir original <ExternalLink size={14} />
                 </a>
               </div>
-              <div className="source-text">
+              <div
+                className="source-text"
+                tabIndex={0}
+                role="region"
+                aria-label="Texto do documento"
+              >
                 {(chosen?.page
                   ? policy.pages?.filter((p) => p.page === chosen.page)
                   : policy.pages
@@ -1683,19 +1655,18 @@ function DetailDialog({
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="Pergunte sobre a apólice…"
                 />
-                <button
-                  className="primary"
+                <Button
                   disabled={
                     busy || question.trim().length < 3 || !health?.ai_configured
                   }
                   aria-label="Enviar pergunta"
                 >
                   {busy ? (
-                    <LoaderCircle className="spin" size={18} />
+                    <LoaderCircle className="spin" data-icon="inline-start" />
                   ) : (
-                    <Send size={18} />
+                    <Send data-icon="inline-start" />
                   )}
-                </button>
+                </Button>
               </form>
               {!health?.ai_configured && (
                 <small>

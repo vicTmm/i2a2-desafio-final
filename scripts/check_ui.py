@@ -14,7 +14,7 @@ with sync_playwright() as p:
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.goto(os.getenv("APP_URL", "http://127.0.0.1:5173"), wait_until="networkidle")
-    expect(page.get_by_role("heading", name="Visão geral.")).to_be_visible()
+    expect(page.get_by_role("heading", name="Visão geral", exact=True)).to_be_visible()
     page.screenshot(path=str(OUT / "overview-empty.png"), full_page=True)
     page.get_by_role("button", name="Carregar exemplos", exact=True).click()
     expect(page.get_by_role("button", name="D&O Essencial").first).to_be_visible()
@@ -69,7 +69,7 @@ with sync_playwright() as p:
     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), "Overflow na página móvel"
     page.get_by_role("button", name="Abrir navegação").click()
     page.get_by_role("button", name="Configurações", exact=True).click()
-    expect(page.get_by_role("heading", name="Configurações.")).to_be_visible()
+    expect(page.get_by_role("heading", name="Configurações", exact=True)).to_be_visible()
     page.screenshot(path=str(OUT / "settings-mobile.png"), full_page=True)
     assert not errors, errors
     browser.close()

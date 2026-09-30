@@ -1,0 +1,475 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-29T21:34:08.513248+00:00",
+  "title": "Design System: InsurMinds",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Papel branco",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(27% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Texto principal",
+        "tonalRamp": [
+          "oklch(15% 0.0037 286.14)",
+          "oklch(27% 0.0037 286.14)",
+          "oklch(38% 0.0037 286.14)",
+          "oklch(49% 0.0037 286.14)",
+          "oklch(61% 0.0037 286.14)",
+          "oklch(72% 0.0037 286.14)",
+          "oklch(84% 0.0037 286.14)",
+          "oklch(95% 0.0037 286.14)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "card",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(27% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "card-foreground": {
+        "role": "neutral",
+        "displayName": "card-foreground",
+        "tonalRamp": [
+          "oklch(15% 0.0037 286.14)",
+          "oklch(27% 0.0037 286.14)",
+          "oklch(38% 0.0037 286.14)",
+          "oklch(49% 0.0037 286.14)",
+          "oklch(61% 0.0037 286.14)",
+          "oklch(72% 0.0037 286.14)",
+          "oklch(84% 0.0037 286.14)",
+          "oklch(95% 0.0037 286.14)"
+        ]
+      },
+      "popover": {
+        "role": "neutral",
+        "displayName": "popover",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(27% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "popover-foreground": {
+        "role": "neutral",
+        "displayName": "popover-foreground",
+        "tonalRamp": [
+          "oklch(15% 0.0037 286.14)",
+          "oklch(27% 0.0037 286.14)",
+          "oklch(38% 0.0037 286.14)",
+          "oklch(49% 0.0037 286.14)",
+          "oklch(61% 0.0037 286.14)",
+          "oklch(72% 0.0037 286.14)",
+          "oklch(84% 0.0037 286.14)",
+          "oklch(95% 0.0037 286.14)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Grafite",
+        "tonalRamp": [
+          "oklch(15% 0.0055 286.03)",
+          "oklch(27% 0.0055 286.03)",
+          "oklch(38% 0.0055 286.03)",
+          "oklch(49% 0.0055 286.03)",
+          "oklch(61% 0.0055 286.03)",
+          "oklch(72% 0.0055 286.03)",
+          "oklch(84% 0.0055 286.03)",
+          "oklch(95% 0.0055 286.03)"
+        ]
+      },
+      "primary-foreground": {
+        "role": "primary",
+        "displayName": "primary-foreground",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(27% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "Cinza claro",
+        "tonalRamp": [
+          "oklch(15% 0.0013 286.38)",
+          "oklch(27% 0.0013 286.38)",
+          "oklch(38% 0.0013 286.38)",
+          "oklch(49% 0.0013 286.38)",
+          "oklch(61% 0.0013 286.38)",
+          "oklch(72% 0.0013 286.38)",
+          "oklch(84% 0.0013 286.38)",
+          "oklch(95% 0.0013 286.38)"
+        ]
+      },
+      "secondary-foreground": {
+        "role": "neutral",
+        "displayName": "Texto secundário",
+        "tonalRamp": [
+          "oklch(15% 0.0119 285.81)",
+          "oklch(27% 0.0119 285.81)",
+          "oklch(38% 0.0119 285.81)",
+          "oklch(49% 0.0119 285.81)",
+          "oklch(61% 0.0119 285.81)",
+          "oklch(72% 0.0119 285.81)",
+          "oklch(84% 0.0119 285.81)",
+          "oklch(95% 0.0119 285.81)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Papel suave",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(27% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Texto de apoio",
+        "tonalRamp": [
+          "oklch(15% 0.0094 286.06)",
+          "oklch(27% 0.0094 286.06)",
+          "oklch(38% 0.0094 286.06)",
+          "oklch(49% 0.0094 286.06)",
+          "oklch(61% 0.0094 286.06)",
+          "oklch(72% 0.0094 286.06)",
+          "oklch(84% 0.0094 286.06)",
+          "oklch(95% 0.0094 286.06)"
+        ]
+      },
+      "accent": {
+        "role": "neutral",
+        "displayName": "Cinza de seleção",
+        "tonalRamp": [
+          "oklch(15% 0.0013 286.37)",
+          "oklch(27% 0.0013 286.37)",
+          "oklch(38% 0.0013 286.37)",
+          "oklch(49% 0.0013 286.37)",
+          "oklch(61% 0.0013 286.37)",
+          "oklch(72% 0.0013 286.37)",
+          "oklch(84% 0.0013 286.37)",
+          "oklch(95% 0.0013 286.37)"
+        ]
+      },
+      "accent-foreground": {
+        "role": "neutral",
+        "displayName": "accent-foreground",
+        "tonalRamp": [
+          "oklch(15% 0.0037 286.14)",
+          "oklch(27% 0.0037 286.14)",
+          "oklch(38% 0.0037 286.14)",
+          "oklch(49% 0.0037 286.14)",
+          "oklch(61% 0.0037 286.14)",
+          "oklch(72% 0.0037 286.14)",
+          "oklch(84% 0.0037 286.14)",
+          "oklch(95% 0.0037 286.14)"
+        ]
+      },
+      "destructive": {
+        "role": "error",
+        "displayName": "Vermelho de erro",
+        "tonalRamp": [
+          "oklch(15% 0.1523 25.06)",
+          "oklch(27% 0.1523 25.06)",
+          "oklch(38% 0.1523 25.06)",
+          "oklch(49% 0.1523 25.06)",
+          "oklch(61% 0.1523 25.06)",
+          "oklch(72% 0.1523 25.06)",
+          "oklch(84% 0.1523 25.06)",
+          "oklch(95% 0.1523 25.06)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Divisória",
+        "tonalRamp": [
+          "oklch(15% 0.0040 286.32)",
+          "oklch(27% 0.0040 286.32)",
+          "oklch(38% 0.0040 286.32)",
+          "oklch(49% 0.0040 286.32)",
+          "oklch(61% 0.0040 286.32)",
+          "oklch(72% 0.0040 286.32)",
+          "oklch(84% 0.0040 286.32)",
+          "oklch(95% 0.0040 286.32)"
+        ]
+      },
+      "input": {
+        "role": "neutral",
+        "displayName": "Contorno do campo",
+        "tonalRamp": [
+          "oklch(15% 0.0055 286.29)",
+          "oklch(27% 0.0055 286.29)",
+          "oklch(38% 0.0055 286.29)",
+          "oklch(49% 0.0055 286.29)",
+          "oklch(61% 0.0055 286.29)",
+          "oklch(72% 0.0055 286.29)",
+          "oklch(84% 0.0055 286.29)",
+          "oklch(95% 0.0055 286.29)"
+        ]
+      },
+      "ring": {
+        "role": "neutral",
+        "displayName": "Foco",
+        "tonalRamp": [
+          "oklch(15% 0.0138 285.94)",
+          "oklch(27% 0.0138 285.94)",
+          "oklch(38% 0.0138 285.94)",
+          "oklch(49% 0.0138 285.94)",
+          "oklch(61% 0.0138 285.94)",
+          "oklch(72% 0.0138 285.94)",
+          "oklch(84% 0.0138 285.94)",
+          "oklch(95% 0.0138 285.94)"
+        ]
+      },
+      "overlay": {
+        "role": "neutral",
+        "displayName": "Véu neutro",
+        "tonalRamp": [
+          "oklch(15% 0.0059 285.89)",
+          "oklch(27% 0.0059 285.89)",
+          "oklch(38% 0.0059 285.89)",
+          "oklch(49% 0.0059 285.89)",
+          "oklch(61% 0.0059 285.89)",
+          "oklch(72% 0.0059 285.89)",
+          "oklch(84% 0.0059 285.89)",
+          "oklch(95% 0.0059 285.89)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "headline",
+        "purpose": "Título de página."
+      },
+      "headline-mobile": {
+        "displayName": "headline-mobile",
+        "purpose": "Título em celular."
+      },
+      "title": {
+        "displayName": "title",
+        "purpose": "Título de painel."
+      },
+      "section": {
+        "displayName": "section",
+        "purpose": "Título de seção."
+      },
+      "body": {
+        "displayName": "body",
+        "purpose": "Texto geral."
+      },
+      "label": {
+        "displayName": "label",
+        "purpose": "Rótulos e metadados."
+      },
+      "metric": {
+        "displayName": "metric",
+        "purpose": "Resumo numérico."
+      }
+    },
+    "shadows": [
+      {
+        "name": "selection",
+        "value": "0 8px 32px rgb(24 24 27 / 14%)",
+        "purpose": "Barra flutuante de seleção."
+      },
+      {
+        "name": "toast",
+        "value": "0 6px 24px rgb(24 24 27 / 10%)",
+        "purpose": "Notificação."
+      },
+      {
+        "name": "sticky-column",
+        "value": "0 1px 2px var(--border)",
+        "purpose": "Coluna fixa da comparação."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-transition",
+        "value": "160ms ease",
+        "purpose": "Mudanças de fundo, cor, borda e sombra."
+      },
+      {
+        "name": "dialog-transition",
+        "value": "100ms",
+        "purpose": "Entrada e saída dos diálogos."
+      },
+      {
+        "name": "loading-spin",
+        "value": "1.3s linear infinite",
+        "purpose": "Indicador de processamento."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "700px"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1050px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      }
+    ],
+    "notes": [
+      "Rampas tonais sintetizadas em OKLCH para prévia; não são tokens adicionais da interface.",
+      "prefers-reduced-motion remove transições e reduz a duração de animações para 0.01ms."
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão primary",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Nova análise.",
+      "html": "<button type=\"button\" class=\"ds-btn-primary\">Nova análise</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid transparent;border-radius:var(--radius,8px);padding:0 10px;height:32px;font:500 14px/20px \"DM Sans\",sans-serif;cursor:pointer;transition:background .16s,color .16s,border-color .16s,box-shadow .16s;background:var(--primary,#27272a);color:var(--primary-foreground,#ffffff);}.ds-btn-primary:hover{background:color-mix(in oklab,var(--primary,#27272a) 80%,transparent);}.ds-btn-primary:focus-visible{border-color:var(--ring,#71717a);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--ring,#71717a) 50%,transparent);}.ds-btn-primary:active{transform:translateY(1px)}.ds-btn-primary:disabled{opacity:.5;pointer-events:none}@media(max-width:700px){.ds-btn-primary{min-height:40px}}"
+    },
+    {
+      "name": "Botão outline",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Exportar PDF.",
+      "html": "<button type=\"button\" class=\"ds-btn-outline\">Exportar PDF</button>",
+      "css": ".ds-btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid transparent;border-radius:var(--radius,8px);padding:0 10px;height:32px;font:500 14px/20px \"DM Sans\",sans-serif;cursor:pointer;transition:background .16s,color .16s,border-color .16s,box-shadow .16s;background:var(--background,#ffffff);color:var(--foreground,#242426);border-color:var(--border,#e4e4e7);}.ds-btn-outline:hover{background:var(--muted,#fafafa);}.ds-btn-outline:focus-visible{border-color:var(--ring,#71717a);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--ring,#71717a) 50%,transparent);}.ds-btn-outline:active{transform:translateY(1px)}.ds-btn-outline:disabled{opacity:.5;pointer-events:none}@media(max-width:700px){.ds-btn-outline{min-height:40px}}"
+    },
+    {
+      "name": "Botão ghost",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Limpar seleção.",
+      "html": "<button type=\"button\" class=\"ds-btn-ghost\">Limpar seleção</button>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid transparent;border-radius:var(--radius,8px);padding:0 10px;height:32px;font:500 14px/20px \"DM Sans\",sans-serif;cursor:pointer;transition:background .16s,color .16s,border-color .16s,box-shadow .16s;background:transparent;color:var(--foreground,#242426);}.ds-btn-ghost:hover{background:var(--muted,#fafafa);}.ds-btn-ghost:focus-visible{border-color:var(--ring,#71717a);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--ring,#71717a) 50%,transparent);}.ds-btn-ghost:active{transform:translateY(1px)}.ds-btn-ghost:disabled{opacity:.5;pointer-events:none}@media(max-width:700px){.ds-btn-ghost{min-height:40px}}"
+    },
+    {
+      "name": "Botão link",
+      "kind": "button",
+      "refersTo": "button-link",
+      "description": "Explorar exemplos fictícios.",
+      "html": "<button type=\"button\" class=\"ds-btn-link\">Explorar exemplos fictícios</button>",
+      "css": ".ds-btn-link{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid transparent;border-radius:var(--radius,8px);padding:0 10px;height:32px;font:500 14px/20px \"DM Sans\",sans-serif;cursor:pointer;transition:background .16s,color .16s,border-color .16s,box-shadow .16s;background:transparent;color:var(--primary,#27272a);text-underline-offset:4px;}.ds-btn-link:hover{text-decoration:underline;}.ds-btn-link:focus-visible{border-color:var(--ring,#71717a);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--ring,#71717a) 50%,transparent);}.ds-btn-link:active{transform:translateY(1px)}.ds-btn-link:disabled{opacity:.5;pointer-events:none}@media(max-width:700px){.ds-btn-link{min-height:40px}}"
+    },
+    {
+      "name": "Busca",
+      "kind": "input",
+      "refersTo": "search",
+      "description": "Busca por apólice na biblioteca.",
+      "html": "<label class=\"ds-search\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input aria-label=\"Buscar apólices\" placeholder=\"Buscar apólices\" /></label>",
+      "css": ".ds-search{display:flex;align-items:center;gap:10px;width:340px;max-width:100%;min-height:38px;padding:0 12px;border:1px solid var(--border,#e4e4e7);border-radius:6px;background:var(--background,#fff);color:var(--muted-foreground,#636369)}.ds-search input{width:100%;min-width:0;border:0;padding:12px 0;background:transparent;color:var(--foreground,#242426);font:400 13px/1.5 \"DM Sans\",sans-serif}.ds-search input::placeholder{color:var(--muted-foreground,#636369)}.ds-search input:focus-visible{outline:2px solid var(--ring,#71717a);outline-offset:3px}"
+    },
+    {
+      "name": "Navegação ativa",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Destino atual na navegação lateral.",
+      "html": "<nav aria-label=\"Navegação\"><button type=\"button\" aria-current=\"page\" class=\"ds-nav\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\"/></svg>Visão geral</button></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:10px;min-height:40px;width:100%;padding:10px 12px;border:0;border-radius:6px;background:var(--accent,#ededee);color:var(--foreground,#242426);font:600 13px/1.5 \"DM Sans\",sans-serif;text-align:left;cursor:pointer;transition:background .16s,color .16s}.ds-nav:hover{background:var(--muted,#fafafa);color:var(--primary,#27272a)}.ds-nav:focus-visible{outline:2px solid var(--ring,#71717a);outline-offset:3px}"
+    },
+    {
+      "name": "Estado da apólice",
+      "kind": "chip",
+      "refersTo": "badge-secondary",
+      "description": "Estado legível com ícone e texto.",
+      "html": "<span class=\"ds-badge\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m20 6-11 11-5-5\"/></svg>Pronta</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:20px;padding:2px 8px;border:1px solid transparent;border-radius:calc(var(--radius,8px)*2.6);background:var(--secondary,#f4f4f5);color:var(--secondary-foreground,#3f3f46);font:500 12px/16px \"DM Sans\",sans-serif;white-space:nowrap}"
+    },
+    {
+      "name": "Cartão de seleção",
+      "kind": "card",
+      "refersTo": "policy-card",
+      "description": "Apólice disponível para comparação.",
+      "html": "<button type=\"button\" class=\"ds-card\" aria-pressed=\"false\"><span class=\"ds-card-title\">Apólice D&amp;O</span><span class=\"ds-card-description\">Exemplo fictício</span></button>",
+      "css": ".ds-card{display:block;width:100%;text-align:left;padding:20px;border:1px solid var(--accent,#ededee);border-radius:10px;background:var(--background,#fff);color:var(--foreground,#242426);font-family:\"DM Sans\",sans-serif;cursor:pointer;transition:border-color .16s,background .16s}.ds-card-title{display:block;font-size:18px;font-weight:600;margin:8px 0}.ds-card-description{display:block;color:var(--muted-foreground,#636369);font-size:13px;line-height:1.65}.ds-card:hover{border-color:var(--muted-foreground,#636369)}.ds-card[aria-pressed=true]{border-color:var(--primary,#27272a);background:var(--muted,#fafafa);box-shadow:none}.ds-card:focus-visible{outline:2px solid var(--ring,#71717a);outline-offset:3px}"
+    },
+    {
+      "name": "área de upload",
+      "kind": "custom",
+      "refersTo": "upload-zone",
+      "description": "Entrada compacta de documentos no diálogo.",
+      "html": "<button type=\"button\" class=\"ds-upload\"><svg width=\"27\" height=\"27\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><path d=\"m17 8-5-5-5 5M12 3v12\"/></svg><strong>Arraste seus documentos até aqui</strong><span>ou <u>selecione os arquivos</u></span><small>PDF, PNG, JPG ou WebP é Até 20 MB por arquivo</small></button>",
+      "css": ".ds-upload{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;padding:24px 15px;border:1px dashed var(--input,#d4d4d8);border-radius:8px;background:var(--muted,#fafafa);color:var(--foreground,#242426);font:400 13px/1.5 \"DM Sans\",sans-serif;cursor:pointer;transition:background .16s,border-color .16s}.ds-upload strong{font-weight:500}.ds-upload span,.ds-upload small{color:var(--muted-foreground,#636369)}.ds-upload small{font-size:11px;margin-top:7px}.ds-upload>svg{padding:10px;margin-bottom:7px;background:var(--secondary,#f4f4f5);border:1px solid var(--border,#e4e4e7);border-radius:10px;flex-shrink:0}.ds-upload:hover{background:var(--secondary,#f4f4f5);border-color:var(--primary,#27272a)}.ds-upload:focus-visible{outline:2px solid var(--ring,#71717a);outline-offset:3px}.ds-upload:disabled{opacity:.48;cursor:not-allowed}"
+    },
+    {
+      "name": "Alerta de erro",
+      "kind": "custom",
+      "refersTo": "alert",
+      "description": "Mensagem e recuperação no mesmo grupo.",
+      "html": "<div class=\"ds-alert\" role=\"alert\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 8v4M12 16h.01\"/></svg><div class=\"ds-alert-content\"><span>Não foi possível carregar os documentos.</span><button type=\"button\" class=\"ds-alert-retry\">Tentar novamente</button></div></div>",
+      "css": ".ds-alert{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;padding:8px 10px;border:1px solid var(--border,#e4e4e7);border-radius:8px;background:var(--card,#fff);color:var(--destructive,#a12d2d);font:400 14px/20px \"DM Sans\",sans-serif}.ds-alert>svg{margin-top:2px}.ds-alert-content{display:flex;align-items:center;gap:16px}.ds-alert-retry{height:28px;padding:0 10px;border:1px solid var(--border,#e4e4e7);border-radius:calc(var(--radius,8px)*.8);background:var(--background,#fff);color:var(--foreground,#242426);font:500 12.8px/20px \"DM Sans\",sans-serif;white-space:nowrap;cursor:pointer;transition:background .16s}.ds-alert-retry:hover{background:var(--muted,#fafafa)}.ds-alert-retry:focus-visible{border-color:var(--ring,#71717a);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--ring,#71717a) 50%,transparent);}.ds-alert-retry:active{transform:translateY(1px)}@media(max-width:639px){.ds-alert-content{flex-direction:column;align-items:flex-start;gap:8px}}@media(max-width:700px){.ds-alert-retry{min-height:40px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Mesa de conferência",
+    "overview": "Uma mesa de conferência documental: superfícies claras, contraste neutro e controles compactos. A hierarquia distingue ação, conteúdo e apoio sem depender de ilustração ou cor decorativa.\n\nDM Sans reúne títulos, valores e textos de interface. Bordas leves organizam tabelas e painéis; diferenças de tom indicam seleção e disponibilidade.",
+    "keyCharacteristics": [
+      "Tons neutros e vermelho reservado a erros.",
+      "Uma família tipográfica, com pesos 400, 500 e 600.",
+      "Densidade compacta, foco visível e adaptação ao toque."
+    ],
+    "rules": [
+      {
+        "name": "The Cor funcional Rule.",
+        "body": "Use vermelho para erro; seleção e navegação usam tons neutros.",
+        "section": "colors"
+      },
+      {
+        "name": "The Peso disponível Rule.",
+        "body": "Use os pesos carregados de DM Sans: 400, 500 e 600.",
+        "section": "typography"
+      },
+      {
+        "name": "The Superfície plana Rule.",
+        "body": "Organize o conteúdo com bordas e tons; reserve sombras suaves para elementos flutuantes.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preservar foco visível, rótulos e estados desabilitados.",
+      "Do identificar exemplos fictícios e usar textos curtos em português.",
+      "Do manter a rolagem horizontal dentro das tabelas e permitir quebra de texto nos controles."
+    ],
+    "donts": [
+      "Don't adicionar cores decorativas à paleta neutra confirmada.",
+      "Don't usar banners promocionais ou ilustrações decorativas.",
+      "Don't remover estados de erro ou usar cor como único indicador de estado."
+    ]
+  }
+}

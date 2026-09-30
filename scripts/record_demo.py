@@ -32,7 +32,7 @@ with sync_playwright() as p:
     slide(page,"O PROBLEMA","Os detalhes mudam a análise","Limites, franquias, coberturas e exclusões precisam ser lidos em conjunto. Localizar cada condição é parte essencial da comparação.",11)
     slide(page,"ARQUITETURA","Interface simples. Processamento especializado.","React → API Python → leitura de PDF ou imagem\nGemini + validação → SQLite → comparação e PDF\n\nIA na extração e consulta. Comparação textual reproduzível.",13)
     page.goto('http://127.0.0.1:5173',wait_until='networkidle')
-    expect(page.get_by_role('heading',name='Visão geral.')).to_be_visible()
+    expect(page.get_by_role('heading',name='Visão geral',exact=True)).to_be_visible()
     caption(page,'A plataforma em funcionamento','A biblioteca organiza documentos, acompanha análises e mantém as comparações no histórico.',8)
     page.get_by_role('button',name='Carregar exemplos',exact=True).click()
     expect(page.get_by_role('button',name='D&O Essencial').first).to_be_visible()
