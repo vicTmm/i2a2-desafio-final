@@ -69,6 +69,14 @@ Condições gerais podem descrever coberturas não contratadas. Evidências múl
 
 Testes automatizados cobrem leitura de PDF e imagem, PDFs criptografados, limites, dados ausentes, evidências falsas, persistência, comparação e exportação. O teste automatizado de upload usa um provedor simulado. A execução real de 05/10/2026 com Gemini 3.8 Flash concluiu os dois PDFs fictícios: 16 critérios com evidências textuais verificadas em cada documento, 10 diferenças entre 16 campos e nenhuma ausência. As exportações PDF e JSON passaram. O registro está em `Projeto_Final_Artefatos/Validacao_IA_Exemplos.json`. Foram aprovados 32 testes Python e um teste Node de upload, além do build e da verificação de interface em desktop e celular. A validação utiliza os documentos fictícios autorais do projeto. A ferramenta confere a origem textual das informações; a interpretação contratual é conferida pelo usuário.
 
+## Possibilidades de evolução futura
+
+- Uso por múltiplos usuários: adicionar autenticação, autorização por documento, isolamento de dados e controle de requisições. Definir políticas de retenção e exclusão antes de disponibilizar a aplicação pela Internet.
+- Processamento persistente: substituir a fila em memória por uma fila durável com trabalhadores separados da API, permitindo recuperar tarefas após reinícios e acompanhar tentativas sem depender de um único processo.
+- Comparação semântica: normalizar moeda, datas e unidades e identificar redações equivalentes, mantendo a distinção entre limites, sub-limites e condições de cobertura. Qualquer interpretação adicional deve preservar as evidências e permitir revisão humana.
+- Qualidade da leitura: avaliar OCR complementar para digitalizações de baixa qualidade e referências entre blocos. Ampliar a avaliação com documentos autorizados de formatos variados, medindo precisão dos campos e das citações.
+- Auditoria e integração: registrar correções feitas pelo usuário, versões de extração e métricas de tempo e consumo; disponibilizar integrações com outros sistemas preservando o vínculo entre o dado e sua origem.
+
 ## Fontes
 
 - Projeto Final I2A2 2026: leitura e comparação de apólices com IA generativa.

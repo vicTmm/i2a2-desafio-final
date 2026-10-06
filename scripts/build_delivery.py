@@ -19,11 +19,11 @@ from backend.reports import sample_pdf, styles, footer
 
 OUT = ROOT / "Projeto_Final_Artefatos"
 
-def build_pdfs():
+def build_pdfs(report_only=False):
     OUT.mkdir(exist_ok=True)
     examples = OUT / "exemplos"
     examples.mkdir(exist_ok=True)
-    for i, name in enumerate(["Aurora", "Vertice"]):
+    for i, name in enumerate([] if report_only else ["Aurora", "Vertice"]):
         data = sample_pdf(demo_pages(i))
         (examples / f"Apolice_{name}_Ficticia.pdf").write_bytes(data)
         if i == 0:
@@ -63,7 +63,7 @@ def build_pdfs():
         for i, p in enumerate(pdf):
             p.get_pixmap(matrix=pymupdf.Matrix(1.1, 1.1)).save(str(preview / f"report-{i + 1}.png"))
         print(f"Relatório: {len(pdf)} páginas")
-    for name in ["Aurora", "Vertice"]:
+    for name in [] if report_only else ["Aurora", "Vertice"]:
         with pymupdf.open(examples / f"Apolice_{name}_Ficticia.pdf") as pdf:
             assert len(pdf) == 2
             for i, p in enumerate(pdf):
@@ -89,7 +89,8 @@ def build_zip():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--zip-only", action="store_true")
+    parser.add_argument("--report-only", action="store_true", help="Atualiza o relatório e ZIP preservando os PDFs de exemplo")
     args = parser.parse_args()
     if not args.zip_only:
-        build_pdfs()
+        build_pdfs(report_only=args.report_only)
     build_zip()
