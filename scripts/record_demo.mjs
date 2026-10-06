@@ -22,7 +22,7 @@ async function title(title,body,narration,seconds=14){
  segments.push({offset:(Date.now()-start)/1000,narration});await page.waitForTimeout(seconds*1000);
 }
 try{
- await title('Clareza na comparação de apólices D&O','Organizar informações, identificar diferenças e conferir a origem de cada dado.','InsurMinds é uma plataforma de análise e comparação de apólices de responsabilidade de administradores. Ela organiza os dados e mantém a ligação com o documento de origem.');
+ await title('Clareza na comparação de apólices D&O','Organizar informações, identificar diferenças e conferir a origem de cada dado.','Comparar apólices manualmente exige localizar informações em documentos extensos e conferir diferenças entre coberturas. O InsurMinds organiza os dados e mostra a origem de cada informação.');
  await title('Leitura em blocos, evidências e retomada','React → API Python → texto e visão → Gemini 3.8\nValidação → checkpoints → SQLite → comparação e PDF','O processamento divide documentos longos em blocos, conserva as páginas originais e salva respostas concluídas. Valores distintos permanecem disponíveis para revisão.');
  await page.goto(process.env.DEMO_URL||'http://127.0.0.1:8002',{waitUntil:'networkidle'});
  await page.getByRole('heading',{name:'Visão geral',exact:true}).waitFor();
