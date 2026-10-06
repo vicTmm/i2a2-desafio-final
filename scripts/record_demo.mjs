@@ -46,10 +46,7 @@ try{
  if(errors.length)throw Error(errors.join('\n'));
 }finally{await context.close();await browser.close();}
 const source=await video.path();
-const inputs=[];const filters=[];
-for(let i=0;i<segments.length;i++){
- const audio=path.join(tmp,`narracao-${i}.aiff`);execFileSync('/usr/bin/say',['-v','Luciana','-r','155','-o',audio,segments[i].narration]);inputs.push('-i',audio);filters.push(`[${i+1}:a]adelay=${Math.round(segments[i].offset*1000)}:all=1[a${i}]`);
-}
-const filter=filters.join(';')+';'+segments.map((_,i)=>`[a${i}]`).join('')+`amix=inputs=${segments.length}:normalize=0[audio]`;
-execFileSync(path.join(root,'node_modules/ffmpeg-static/ffmpeg'),['-y','-i',source,...inputs,'-filter_complex',filter,'-map','0:v','-map','[audio]','-c:v','libx264','-preset','fast','-crf','25','-pix_fmt','yuv420p','-c:a','aac','-b:a','96k','-movflags','+faststart','-shortest',path.join(out,'InsurMinds_Projeto_Final.mp4')],{stdio:['ignore','ignore','pipe']});
-await fs.writeFile(path.join(tmp,'narracao.json'),JSON.stringify(segments,null,2));console.log('Vídeo concluído: navegação real e narração sintética.');
+execFileSync(path.join(root,'node_modules/ffmpeg-static/ffmpeg'),['-y','-i',source,'-an','-c:v','libx264','-preset','fast','-crf','25','-pix_fmt','yuv420p','-movflags','+faststart',path.join(out,'InsurMinds_Projeto_Final.mp4')],{stdio:['ignore','ignore','pipe']});
+await fs.writeFile(path.join(tmp,'narracao.json'),JSON.stringify(segments,null,2));
+execFileSync(process.env.DEMO_PYTHON||path.join(root,'.venv/bin/python'),[path.join(root,'scripts/dub_demo.py'),'--voice',process.env.NARRATION_VOICE||'pt-BR-AntonioNeural'],{stdio:'inherit'});
+console.log('Vídeo concluído: navegação real e narração sintética.');
