@@ -11,7 +11,7 @@ from starlette.testclient import TestClient
 from backend import agents, storage
 from backend.app import app
 from backend.models import Fact, Extraction, FIELDS
-from backend.documents import read_document, MAX_BYTES
+from backend.documents import read_document, MAX_BYTES, MAX_PAGES
 from backend.demo import demo_pages, VALUES
 from backend.reports import sample_pdf
 
@@ -51,10 +51,10 @@ class DocumentTests(unittest.TestCase):
 
     def test_reject_too_many_pages(self):
         with pymupdf.open() as doc:
-            for _ in range(61):
+            for _ in range(MAX_PAGES + 1):
                 doc.new_page()
             data = doc.tobytes()
-        with self.assertRaisesRegex(ValueError, "60"):
+        with self.assertRaisesRegex(ValueError, str(MAX_PAGES)):
             read_document(data, "long.pdf")
 
 

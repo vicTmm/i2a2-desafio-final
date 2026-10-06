@@ -1,9 +1,17 @@
+export type Evidence = {
+  quote: string;
+  page: number;
+  evidence_status: "verified" | "visual_review";
+};
 export type Fact = {
   key: string;
   value: string | null;
   quote: string | null;
   page: number | null;
   evidence_status: "verified" | "visual_review" | "missing";
+  evidence?: Evidence[];
+  variants?: { value: string; evidence: Evidence[] }[];
+  needs_review?: boolean;
 };
 export type Policy = {
   id: string;
@@ -16,6 +24,12 @@ export type Policy = {
   warnings: string[];
   model: string;
   error?: string;
+  models_used?: string[];
+  progress?: {
+    completed_chunks: number;
+    total_chunks: number;
+    cached_chunks: number;
+  };
   pages?: { page: number; text: string; visual: boolean }[];
 };
 export type Row = {

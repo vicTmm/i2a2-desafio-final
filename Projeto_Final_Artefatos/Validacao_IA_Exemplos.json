@@ -1,0 +1,906 @@
+{
+  "scope": "Documentos fictícios autorais enviados ao Gemini; chamada real, sem simular o provedor.",
+  "model": "gemini-3.8-flash",
+  "documents": [
+    {
+      "filename": "Apolice_Aurora_Ficticia.pdf",
+      "status": "ready",
+      "pages": 2,
+      "chunks": 1,
+      "models_used": [
+        "gemini-3.8-flash"
+      ],
+      "source_identical": true,
+      "facts": [
+        {
+          "key": "insurer",
+          "value": "Aurora Seguros (fictícia)",
+          "quote": "Seguradora: Aurora Seguros (fictícia).",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Seguradora: Aurora Seguros (fictícia).",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Aurora Seguros (fictícia)",
+              "evidence": [
+                {
+                  "quote": "Seguradora: Aurora Seguros (fictícia).",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "insured",
+          "value": "Horizonte Tecnologia S.A. (fictícia)",
+          "quote": "Segurado: Horizonte Tecnologia S.A. (fictícia).",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Segurado: Horizonte Tecnologia S.A. (fictícia).",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Horizonte Tecnologia S.A. (fictícia)",
+              "evidence": [
+                {
+                  "quote": "Segurado: Horizonte Tecnologia S.A. (fictícia).",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "policy_number",
+          "value": "DEMO-2026-001",
+          "quote": "Número da apólice: DEMO-2026-001.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Número da apólice: DEMO-2026-001.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "DEMO-2026-001",
+              "evidence": [
+                {
+                  "quote": "Número da apólice: DEMO-2026-001.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "period",
+          "value": "01/01/2026 a 31/12/2026",
+          "quote": "Vigência: 01/01/2026 a 31/12/2026.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Vigência: 01/01/2026 a 31/12/2026.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "01/01/2026 a 31/12/2026",
+              "evidence": [
+                {
+                  "quote": "Vigência: 01/01/2026 a 31/12/2026.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "limit",
+          "value": "BRL 10.000.000,00",
+          "quote": "Limite de responsabilidade: BRL 10.000.000,00.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Limite de responsabilidade: BRL 10.000.000,00.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "BRL 10.000.000,00",
+              "evidence": [
+                {
+                  "quote": "Limite de responsabilidade: BRL 10.000.000,00.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "premium",
+          "value": "BRL 32.500,00",
+          "quote": "Prêmio total: BRL 32.500,00.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Prêmio total: BRL 32.500,00.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "BRL 32.500,00",
+              "evidence": [
+                {
+                  "quote": "Prêmio total: BRL 32.500,00.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "deductible",
+          "value": "Side B: BRL 50.000,00 por reclamação. Side A: sem franquia.",
+          "quote": "Franquia / participação: Side B: BRL 50.000,00 por reclamação. Side A: sem franquia..",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Franquia / participação: Side B: BRL 50.000,00 por reclamação. Side A: sem franquia..",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Side B: BRL 50.000,00 por reclamação. Side A: sem franquia.",
+              "evidence": [
+                {
+                  "quote": "Franquia / participação: Side B: BRL 50.000,00 por reclamação. Side A: sem franquia..",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "territory",
+          "value": "Mundial, exceto EUA e Canadá",
+          "quote": "Abrangência territorial: Mundial, exceto EUA e Canadá.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Abrangência territorial: Mundial, exceto EUA e Canadá.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Mundial, exceto EUA e Canadá",
+              "evidence": [
+                {
+                  "quote": "Abrangência territorial: Mundial, exceto EUA e Canadá.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "side_a",
+          "value": "Contratada, sujeita às condições da apólice",
+          "quote": "Side A · Administradores: Contratada, sujeita às condições da apólice.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Side A · Administradores: Contratada, sujeita às condições da apólice.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Contratada, sujeita às condições da apólice",
+              "evidence": [
+                {
+                  "quote": "Side A · Administradores: Contratada, sujeita às condições da apólice.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "side_b",
+          "value": "Contratada, sujeita às condições da apólice",
+          "quote": "Side B · Reembolso à empresa: Contratada, sujeita às condições da apólice.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Side B · Reembolso à empresa: Contratada, sujeita às condições da apólice.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Contratada, sujeita às condições da apólice",
+              "evidence": [
+                {
+                  "quote": "Side B · Reembolso à empresa: Contratada, sujeita às condições da apólice.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "side_c",
+          "value": "Não contratada",
+          "quote": "Side C · Valores mobiliários: Não contratada.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Side C · Valores mobiliários: Não contratada.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Não contratada",
+              "evidence": [
+                {
+                  "quote": "Side C · Valores mobiliários: Não contratada.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "defense",
+          "value": "Incluídos no limite agregado",
+          "quote": "Custos de defesa: Incluídos no limite agregado.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Custos de defesa: Incluídos no limite agregado.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Incluídos no limite agregado",
+              "evidence": [
+                {
+                  "quote": "Custos de defesa: Incluídos no limite agregado.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "investigation",
+          "value": "Sublimite de BRL 1.000.000,00",
+          "quote": "Investigações: Sublimite de BRL 1.000.000,00.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Investigações: Sublimite de BRL 1.000.000,00.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Sublimite de BRL 1.000.000,00",
+              "evidence": [
+                {
+                  "quote": "Investigações: Sublimite de BRL 1.000.000,00.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "exclusions",
+          "value": "Atos dolosos com decisão definitiva; danos corporais e materiais.",
+          "quote": "Exclusões: Atos dolosos com decisão definitiva; danos corporais e materiais.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Exclusões: Atos dolosos com decisão definitiva; danos corporais e materiais.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Atos dolosos com decisão definitiva; danos corporais e materiais.",
+              "evidence": [
+                {
+                  "quote": "Exclusões: Atos dolosos com decisão definitiva; danos corporais e materiais.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "retroactivity",
+          "value": "01/01/2023",
+          "quote": "Retroatividade: 01/01/2023.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Retroatividade: 01/01/2023.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "01/01/2023",
+              "evidence": [
+                {
+                  "quote": "Retroatividade: 01/01/2023.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "reporting",
+          "value": "12 meses, sem prêmio adicional",
+          "quote": "Prazo complementar: 12 meses, sem prêmio adicional.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Prazo complementar: 12 meses, sem prêmio adicional.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "12 meses, sem prêmio adicional",
+              "evidence": [
+                {
+                  "quote": "Prazo complementar: 12 meses, sem prêmio adicional.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        }
+      ],
+      "warnings": [
+        "O documento indica expressamente ser fictício para demonstração, sendo material didático sem validade contratual e sem representar oferta de seguro."
+      ]
+    },
+    {
+      "filename": "Apolice_Vertice_Ficticia.pdf",
+      "status": "ready",
+      "pages": 2,
+      "chunks": 1,
+      "models_used": [
+        "gemini-3.8-flash"
+      ],
+      "source_identical": true,
+      "facts": [
+        {
+          "key": "insurer",
+          "value": "Vértice Seguros (fictícia)",
+          "quote": "Seguradora: Vértice Seguros (fictícia).",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Seguradora: Vértice Seguros (fictícia).",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Vértice Seguros (fictícia)",
+              "evidence": [
+                {
+                  "quote": "Seguradora: Vértice Seguros (fictícia).",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "insured",
+          "value": "Horizonte Tecnologia S.A. (fictícia)",
+          "quote": "Segurado: Horizonte Tecnologia S.A. (fictícia).",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Segurado: Horizonte Tecnologia S.A. (fictícia).",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Horizonte Tecnologia S.A. (fictícia)",
+              "evidence": [
+                {
+                  "quote": "Segurado: Horizonte Tecnologia S.A. (fictícia).",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "policy_number",
+          "value": "DEMO-2026-002",
+          "quote": "Número da apólice: DEMO-2026-002.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Número da apólice: DEMO-2026-002.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "DEMO-2026-002",
+              "evidence": [
+                {
+                  "quote": "Número da apólice: DEMO-2026-002.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "period",
+          "value": "01/01/2026 a 31/12/2026",
+          "quote": "Vigência: 01/01/2026 a 31/12/2026.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Vigência: 01/01/2026 a 31/12/2026.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "01/01/2026 a 31/12/2026",
+              "evidence": [
+                {
+                  "quote": "Vigência: 01/01/2026 a 31/12/2026.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "limit",
+          "value": "BRL 15.000.000,00",
+          "quote": "Limite de responsabilidade: BRL 15.000.000,00.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Limite de responsabilidade: BRL 15.000.000,00.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "BRL 15.000.000,00",
+              "evidence": [
+                {
+                  "quote": "Limite de responsabilidade: BRL 15.000.000,00.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "premium",
+          "value": "BRL 41.800,00",
+          "quote": "Prêmio total: BRL 41.800,00.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Prêmio total: BRL 41.800,00.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "BRL 41.800,00",
+              "evidence": [
+                {
+                  "quote": "Prêmio total: BRL 41.800,00.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "deductible",
+          "value": "Side B: BRL 100.000,00 por reclamação; Side A: sem franquia",
+          "quote": "Franquia / participação: Side B: BRL 100.000,00 por reclamação. Side A: sem franquia..",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Franquia / participação: Side B: BRL 100.000,00 por reclamação. Side A: sem franquia..",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Side B: BRL 100.000,00 por reclamação; Side A: sem franquia",
+              "evidence": [
+                {
+                  "quote": "Franquia / participação: Side B: BRL 100.000,00 por reclamação. Side A: sem franquia..",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "territory",
+          "value": "Mundial, exceto EUA e Canadá",
+          "quote": "Abrangência territorial: Mundial, exceto EUA e Canadá.",
+          "page": 1,
+          "evidence": [
+            {
+              "quote": "Abrangência territorial: Mundial, exceto EUA e Canadá.",
+              "page": 1,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Mundial, exceto EUA e Canadá",
+              "evidence": [
+                {
+                  "quote": "Abrangência territorial: Mundial, exceto EUA e Canadá.",
+                  "page": 1,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "side_a",
+          "value": "Contratada, sujeita às condições da apólice",
+          "quote": "Side A · Administradores: Contratada, sujeita às condições da apólice.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Side A · Administradores: Contratada, sujeita às condições da apólice.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Contratada, sujeita às condições da apólice",
+              "evidence": [
+                {
+                  "quote": "Side A · Administradores: Contratada, sujeita às condições da apólice.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "side_b",
+          "value": "Contratada, sujeita às condições da apólice",
+          "quote": "Side B · Reembolso à empresa: Contratada, sujeita às condições da apólice.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Side B · Reembolso à empresa: Contratada, sujeita às condições da apólice.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Contratada, sujeita às condições da apólice",
+              "evidence": [
+                {
+                  "quote": "Side B · Reembolso à empresa: Contratada, sujeita às condições da apólice.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "side_c",
+          "value": "Contratada exclusivamente para reclamações de valores mobiliários",
+          "quote": "Side C · Valores mobiliários: Contratada exclusivamente para reclamações de valores mobiliários.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Side C · Valores mobiliários: Contratada exclusivamente para reclamações de valores mobiliários.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Contratada exclusivamente para reclamações de valores mobiliários",
+              "evidence": [
+                {
+                  "quote": "Side C · Valores mobiliários: Contratada exclusivamente para reclamações de valores mobiliários.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "defense",
+          "value": "Incluídos no limite agregado",
+          "quote": "Custos de defesa: Incluídos no limite agregado.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Custos de defesa: Incluídos no limite agregado.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Incluídos no limite agregado",
+              "evidence": [
+                {
+                  "quote": "Custos de defesa: Incluídos no limite agregado.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "investigation",
+          "value": "Sublimite de BRL 2.000.000,00",
+          "quote": "Investigações: Sublimite de BRL 2.000.000,00.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Investigações: Sublimite de BRL 2.000.000,00.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Sublimite de BRL 2.000.000,00",
+              "evidence": [
+                {
+                  "quote": "Investigações: Sublimite de BRL 2.000.000,00.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "exclusions",
+          "value": "Atos dolosos com decisão definitiva; danos corporais e materiais; poluição",
+          "quote": "Exclusões: Atos dolosos com decisão definitiva; danos corporais e materiais; poluição.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Exclusões: Atos dolosos com decisão definitiva; danos corporais e materiais; poluição.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "Atos dolosos com decisão definitiva; danos corporais e materiais; poluição",
+              "evidence": [
+                {
+                  "quote": "Exclusões: Atos dolosos com decisão definitiva; danos corporais e materiais; poluição.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "retroactivity",
+          "value": "01/01/2022",
+          "quote": "Retroatividade: 01/01/2022.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Retroatividade: 01/01/2022.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "01/01/2022",
+              "evidence": [
+                {
+                  "quote": "Retroatividade: 01/01/2022.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        },
+        {
+          "key": "reporting",
+          "value": "24 meses, sem prêmio adicional",
+          "quote": "Prazo complementar: 24 meses, sem prêmio adicional.",
+          "page": 2,
+          "evidence": [
+            {
+              "quote": "Prazo complementar: 24 meses, sem prêmio adicional.",
+              "page": 2,
+              "evidence_status": "verified"
+            }
+          ],
+          "evidence_status": "verified",
+          "variants": [
+            {
+              "value": "24 meses, sem prêmio adicional",
+              "evidence": [
+                {
+                  "quote": "Prazo complementar: 24 meses, sem prêmio adicional.",
+                  "page": 2,
+                  "evidence_status": "verified"
+                }
+              ]
+            }
+          ],
+          "needs_review": false
+        }
+      ],
+      "warnings": [
+        "O documento declara expressamente ser fictício e material didático sem validade contratual."
+      ]
+    }
+  ],
+  "comparison": {
+    "criteria": 16,
+    "different": 10,
+    "missing": 0,
+    "exports_json_pdf": "passed"
+  }
+}

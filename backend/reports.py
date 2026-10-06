@@ -45,7 +45,10 @@ def comparison_pdf(comparison):
         story.extend([Paragraph("DEMONSTRAÇÃO: contém documentos fictícios e dados pré-preenchidos.", s["BodyText"]), Spacer(1, 12)])
     data = [[p("Critério")] + [p(x["title"]) for x in comparison["policies"]]]
     for row in comparison["rows"]:
-        data.append([p(row["label"])] + [p((f["value"] or "Não identificado") + (f" | p. {f['page']}" if f["page"] else "")) for f in row["cells"]])
+        def cell_text(fact):
+            pages = sorted({e["page"] for e in fact.get("evidence", [])}) or ([fact["page"]] if fact["page"] else [])
+            return (fact["value"] or "Não identificado") + (" | p. " + ", ".join(map(str, pages)) if pages else "") + (" | Conferir versões/condições" if fact.get("needs_review") else "")
+        data.append([p(row["label"])] + [p(cell_text(f)) for f in row["cells"]])
     count = len(comparison["policies"])
     table = Table(data, colWidths=[135] + [(doc.width - 135) / count] * count, repeatRows=1, hAlign="LEFT", splitInRow=1)
     table.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8efeb")), ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 9), ("RIGHTPADDING", (0, 0), (-1, -1), 9), ("TOPPADDING", (0, 0), (-1, -1), 9), ("BOTTOMPADDING", (0, 0), (-1, -1), 9), ("LINEBELOW", (0, 0), (-1, -1), .4, colors.HexColor("#dde4df"))]))
@@ -53,7 +56,15 @@ def comparison_pdf(comparison):
     for row in comparison["rows"]:
         story.append(Paragraph(row["label"], s["Heading3"]))
         for policy, cell in zip(comparison["policies"], row["cells"]):
-            story.append(Paragraph(escape(f"{policy['title']} | página {cell['page'] or '-'} | {cell['quote'] or 'Sem evidência identificada'}"), small))
+            story.append(Paragraph(escape(policy["title"]), small))
+            variants = cell.get("variants") or [{"value": cell["value"], "evidence": cell.get("evidence") or ([{"page": cell["page"], "quote": cell["quote"]}] if cell["quote"] else [])}]
+            for variant in variants:
+                if cell.get("needs_review"):
+                    story.append(Paragraph(escape(variant["value"]), small))
+                for evidence in variant["evidence"]:
+                    story.append(Paragraph(escape(f"Página {evidence['page']} | {evidence['quote']}"), small))
+            if not cell["value"]:
+                story.append(Paragraph("Sem evidência identificada", small))
         story.append(Spacer(1, 8))
     doc.build(story, onFirstPage=footer, onLaterPages=footer)
     return buf.getvalue()

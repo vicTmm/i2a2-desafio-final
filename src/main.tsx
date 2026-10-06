@@ -52,6 +52,7 @@ import {
   DialogTitle,
 } from "./components/ui/dialog";
 import { cn } from "./lib/utils";
+import { uploadBatch } from "./lib/upload";
 import "./styles.css";
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
@@ -74,6 +75,12 @@ const post = (body?: unknown): RequestInit => ({
 });
 const getFact = (p: Policy, key: string) =>
   p.facts.find((f) => f.key === key)?.value;
+const evidenceOf = (fact: Fact) =>
+  fact.evidence?.length
+    ? fact.evidence
+    : fact.quote && fact.page
+      ? [{ quote: fact.quote, page: fact.page, evidence_status: fact.evidence_status }]
+      : [];
 const date = (s: string) =>
   new Date(s).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
 const statuses = {
@@ -162,6 +169,11 @@ function App() {
         api<Comparison[]>("/comparisons"),
       ]);
       setPolicies(p);
+      setDetail((current) => {
+        if (!current || ["ready", "error"].includes(current.policy.status)) return current;
+        const fresh = p.find((policy) => policy.id === current.policy.id);
+        return fresh ? { ...current, policy: { ...current.policy, ...fresh } } : current;
+      });
       setHealth(h);
       setHistory(c);
       setError("");
@@ -1156,7 +1168,7 @@ function App() {
                     {[
                       {
                         title: "Adicione seus documentos",
-                        text: "Envie PDFs, PNG, JPG ou WebP. O limite é de 20 MB, 60 páginas por PDF e até 20 páginas digitalizadas.",
+                        text: "Envie PDFs, PNG, JPG ou WebP. O limite é de 20 MB e 300 páginas por PDF. Documentos longos são analisados em partes, com as páginas originais preservadas.",
                         icon: Upload,
                       },
                       {
@@ -1320,19 +1332,19 @@ function UploadDialog({
   async function send() {
     setUploading(true);
     setError("");
-    let completed = 0;
     try {
-      for (const f of files) {
+      const failures = await uploadBatch(files, async (f) => {
         const form = new FormData();
         form.append("file", f);
         await api("/upload", { method: "POST", body: form });
-        completed++;
         onUploaded();
+      });
+      if (failures.length) {
+        setFiles(failures.map((failure) => failure.file));
+        setError(failures.map(({file, error}) => `${file.name}: ${error.message}`).join("\n"));
+      } else {
+        onClose();
       }
-      onClose();
-    } catch (e) {
-      setFiles((s) => s.slice(completed));
-      setError((e as Error).message);
     } finally {
       setUploading(false);
     }
@@ -1520,6 +1532,9 @@ function DetailDialog({
           <CircleAlert size={30} />
           <h3>A análise não foi concluída</h3>
           <p>{policy.error}</p>
+          {policy.progress && policy.progress.completed_chunks > 0 && (
+            <p>{policy.progress.completed_chunks} de {policy.progress.total_chunks} partes salvas. A próxima tentativa reaproveitará o trabalho concluído.</p>
+          )}
           <Button onClick={() => void onRetry()}>Tentar novamente</Button>
         </div>
       ) : policy.status !== "ready" ? (
@@ -1527,6 +1542,9 @@ function DetailDialog({
           <LoaderCircle className="spin" />
           <h3>{statuses[policy.status]}</h3>
           <p>Acompanhe o andamento na biblioteca.</p>
+          {policy.progress && (
+            <p>{policy.progress.completed_chunks} de {policy.progress.total_chunks} partes concluídas.</p>
+          )}
         </div>
       ) : (
         <>
@@ -1543,6 +1561,7 @@ function DetailDialog({
                 >
                   <span>{health?.fields[f.key]?.[0] || f.key}</span>
                   <strong>{f.value || "Não identificado"}</strong>
+                  {f.needs_review && <small>Conferir condições e versões encontradas</small>}
                   <small>
                     {f.evidence_status === "verified" ? (
                       <CheckCheck size={13} />
@@ -1550,7 +1569,7 @@ function DetailDialog({
                       <CircleAlert size={13} />
                     )}{" "}
                     {f.page
-                      ? `p. ${f.page} · ${f.evidence_status === "verified" ? "Trecho localizado" : "Revisão visual"}`
+                      ? `${[...new Set(evidenceOf(f).map((e) => e.page))].map((p) => `p. ${p}`).join(", ")} · ${f.evidence_status === "verified" ? "Trecho localizado" : "Revisão visual"}`
                       : "Sem evidência"}
                     <ArrowUpRight size={13} />
                   </small>
@@ -1564,13 +1583,21 @@ function DetailDialog({
                 <div className="quote-card">
                   <span className="eyebrow">
                     {health?.fields[chosen.key]?.[0]}{" "}
-                    {chosen.page && `/ PÁGINA ${chosen.page}`}
                   </span>
-                  <blockquote>
-                    {chosen.quote
-                      ? `“${chosen.quote}”`
-                      : "Não foi identificada uma evidência para este critério. Confira o documento original."}
-                  </blockquote>
+                  {chosen.needs_review && <p>Há versões ou condições diferentes. Confira cada valor e suas evidências.</p>}
+                  {(chosen.variants?.length ? chosen.variants : [{ value: chosen.value, evidence: evidenceOf(chosen) }]).map((variant, i) => (
+                    <div key={i}>
+                      {chosen.needs_review && <strong>{variant.value}</strong>}
+                      {variant.evidence.map((e, j) => (
+                        <div key={j}>
+                          <a className="text-button" href={`/api/policies/${policy.id}/source#page=${e.page}`} target="_blank" rel="noreferrer">Página {e.page} <ExternalLink size={14} /></a>
+                          <blockquote>“{e.quote}”</blockquote>
+                          {e.evidence_status === "visual_review" && <small>Confira esta evidência visualmente no original.</small>}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                  {!evidenceOf(chosen).length && <blockquote>Não foi identificada uma evidência para este critério. Confira o documento original.</blockquote>}
                   <small>
                     {chosen.evidence_status === "verified"
                       ? "O trecho foi localizado no texto da página. A interpretação ainda precisa de revisão."
@@ -1601,7 +1628,7 @@ function DetailDialog({
                 aria-label="Texto do documento"
               >
                 {(chosen?.page
-                  ? policy.pages?.filter((p) => p.page === chosen.page)
+                  ? policy.pages?.filter((p) => evidenceOf(chosen).some((e) => e.page === p.page))
                   : policy.pages
                 )?.map((p) => (
                   <section key={p.page}>

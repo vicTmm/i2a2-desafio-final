@@ -46,9 +46,13 @@ async def process(item_id, data):
             pages, mime = await asyncio.to_thread(read_document, data, policy["filename"])
             policy.update(status="extracting", pages=pages)
             storage.save("policies", policy)
-            title, facts, warnings = await agents.extract(pages)
+            def progress(value):
+                policy["progress"] = value
+                policy["models_used"] = value["models_used"]
+                storage.save("policies", policy)
+            title, facts, warnings = await agents.extract(pages, progress=progress)
             # Keep the original format for the source viewer.
-            policy.update(title=title, facts=facts, warnings=warnings, status="ready", processed_at=now())
+            policy.update(title=title, facts=facts, warnings=warnings, status="ready", error=None, processed_at=now())
         except (ValueError, agents.ProviderError) as exc:
             policy.update(status="error", error=str(exc))
         except Exception:
@@ -67,7 +71,7 @@ async def lifespan(app):
         await asyncio.gather(*tasks, return_exceptions=True)
 
 async def health(request):
-    return JSONResponse({"status": "ok", "ai_configured": agents.configured(), "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.6-flash"), "fields": FIELDS})
+    return JSONResponse({"status": "ok", "ai_configured": agents.configured(), "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.8-flash"), "fields": FIELDS})
 
 async def policies(request):
     return JSONResponse([public(p) for p in storage.all_items("policies")])
@@ -87,6 +91,7 @@ async def upload(request: Request):
         data = await file.read(MAX_BYTES + 1)
         filename = str(file.filename or "documento").replace("\\", "/").split("/")[-1][:150]
     pages, mime = await asyncio.to_thread(read_document, data, filename)
+    agents.split_pages(pages)  # Validar o limite total antes de inserir na biblioteca.
     if len(tasks) >= 6:
         return JSONResponse({"error": "Fila cheia. Aguarde o processamento atual."}, status_code=429)
     item_id = uuid.uuid4().hex
@@ -94,7 +99,7 @@ async def upload(request: Request):
     path = storage.root() / (item_id + extension)
     path.write_bytes(data)
     actual_mime = mime
-    policy = {"id": item_id, "title": Path(filename).stem, "filename": filename, "mime": actual_mime, "file_path": str(path), "status": "queued", "demo": False, "created_at": now(), "facts": [], "pages": pages, "warnings": [], "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.6-flash")}
+    policy = {"id": item_id, "title": Path(filename).stem, "filename": filename, "mime": actual_mime, "file_path": str(path), "status": "queued", "demo": False, "created_at": now(), "facts": [], "pages": pages, "warnings": [], "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.8-flash")}
     storage.save("policies", policy)
     task = asyncio.create_task(process(item_id, data))
     tasks.add(task)

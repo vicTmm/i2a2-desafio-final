@@ -20,12 +20,18 @@ FIELDS = {
     "reporting": ("Prazo complementar", "Condições"),
 }
 
+class Evidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    quote: str = Field(min_length=1)
+    page: int = Field(ge=1)
+
 class Fact(BaseModel):
     model_config = ConfigDict(extra="forbid")
     key: str
     value: str | None
     quote: str | None
     page: int | None
+    evidence: list[Evidence] = Field(default_factory=list)
 
 class Extraction(BaseModel):
     model_config = ConfigDict(extra="forbid")

@@ -14,8 +14,8 @@ pptx.title = "InsurMinds - Análise e comparação de apólices D&O";
 pptx.company = "InsurMinds";
 pptx.lang = "pt-BR";
 pptx.theme = {
-  headFontFace: "Aptos Display",
-  bodyFontFace: "Aptos",
+  headFontFace: "Arial",
+  bodyFontFace: "Arial",
   lang: "pt-BR",
 };
 const C = {
@@ -31,7 +31,7 @@ function text(slide, value, x, y, w, h, size = 22, extra = {}) {
     y,
     w,
     h,
-    fontFace: "Aptos",
+    fontFace: "Arial",
     fontSize: size,
     color: C.ink,
     margin: 0,
@@ -45,7 +45,7 @@ function base(title, num) {
   s.background = { color: C.bg };
   text(s, title, 0.7, 0.62, 11.9, 0.9, 34, {
     bold: true,
-    fontFace: "Aptos Display",
+    fontFace: "Arial",
   });
   text(s, "InsurMinds / I2A2 2026", 0.7, 7.04, 8, 0.2, 10, { color: C.muted });
   text(s, String(num).padStart(2, "0"), 12.05, 7.04, 0.5, 0.2, 10, {
@@ -56,7 +56,7 @@ function base(title, num) {
 }
 let s = base("InsurMinds", 1);
 text(s, "Clareza na comparação\nde apólices D&O", 0.7, 2.05, 11.8, 1.8, 48, {
-  fontFace: "Aptos Display",
+  fontFace: "Arial",
   bold: true,
 });
 text(s, "Extração com IA e evidências por página", 0.74, 4.35, 11.5, 0.65, 25, {
@@ -126,7 +126,7 @@ text(
   { color: C.muted },
 );
 s.addNotes(
-  "Captura real da aplicação local. Dados exibidos são exemplos sintéticos e pré-preenchidos. Não representam execução real do modelo.",
+  "Captura real da aplicação local. Dados exibidos são documentos fictícios efetivamente enviados à análise real com Gemini 3.8 Flash; registro em Validacao_IA_Exemplos.json.",
 );
 s = base("Arquitetura do MVP", 4);
 // Diagrama de arquitetura editável, exigido para explicar o projeto.
@@ -146,7 +146,7 @@ nodes.forEach((n, i) => {
 });
 text(
   s,
-  "Pipeline especializado com IA na extração e na consulta.",
+  "Blocos, checkpoints e múltiplas evidências por critério.",
   0.7,
   6.3,
   11.9,
@@ -203,7 +203,7 @@ s.addTable(
     w: 11.9,
     h: 3.25,
     colW: [4.2, 3.85, 3.85],
-    fontFace: "Aptos",
+    fontFace: "Arial",
     fontSize: 22,
     color: C.ink,
     border: { type: "solid", color: C.line, pt: 0.7 },
@@ -234,10 +234,10 @@ text(
   { color: C.muted },
 );
 s.addNotes(
-  "Fonte: backend/demo.py e comparação determinística. Não é benchmark de precisão da IA nem comparação de produtos reais.",
+  "Fonte: PDFs fictícios autorais, extração real Gemini 3.8 Flash e comparação determinística. Não é benchmark de precisão da IA nem comparação de produtos reais.",
 );
 s = base("Validação e limitações", 7);
-text(s, "18 testes automatizados", 0.7, 2, 11.6, 0.7, 32, { bold: true });
+text(s, "32 testes Python + 1 teste de upload", 0.7, 2, 11.6, 0.7, 32, { bold: true });
 text(
   s,
   "Leitura de documentos, evidências, persistência, comparação e exportações. Fluxo de interface verificado em desktop e celular.",
@@ -250,7 +250,7 @@ text(
 );
 text(
   s,
-  "Validação funcional: extração real com Gemini em PDFs fictícios. Precisão em apólices de mercado ainda não avaliada.",
+  "Gemini 3.8: dois PDFs fictícios, 16 critérios verificados por documento e exportações PDF/JSON aprovadas.",
   0.7,
   5.02,
   11.7,
@@ -269,7 +269,7 @@ text(
   { color: C.muted },
 );
 s.addNotes(
-  "Testes automatizados e fluxo de interface executados. A equipe também validou uma extração real com Gemini usando PDFs fictícios. Isso não mede a precisão em apólices de mercado. A comparação é textual e requer revisão humana.",
+  "Testes automatizados e fluxo de interface executados. A equipe também validou duas extrações reais com Gemini 3.8 Flash usando PDFs fictícios. Isso não mede a precisão em apólices de mercado. A comparação é textual e requer revisão humana.",
 );
 s = base("Próximos passos da equipe", 8);
 text(
@@ -284,7 +284,7 @@ text(
 );
 text(
   s,
-  "Evolução: múltiplas evidências por campo, comparação semântica, revisão versionada e fila persistente.",
+  "Evolução: avaliação por campo, comparação semântica, revisão versionada, autenticação e fila persistente.",
   0.7,
   3.96,
   11.6,

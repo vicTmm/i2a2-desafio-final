@@ -4,7 +4,7 @@ import pymupdf
 from PIL import Image, UnidentifiedImageError
 
 MAX_BYTES = 20 * 1024 * 1024
-MAX_PAGES = 60
+MAX_PAGES = 300
 
 def read_document(data: bytes, filename: str):
     if not data or len(data) > MAX_BYTES:
@@ -15,7 +15,7 @@ def read_document(data: bytes, filename: str):
                 if doc.needs_pass:
                     raise ValueError("PDF protegido por senha. Envie uma cópia desbloqueada.")
                 if not 1 <= len(doc) <= MAX_PAGES:
-                    raise ValueError("O MVP aceita PDFs de 1 a 60 páginas.")
+                    raise ValueError(f"O MVP aceita PDFs de 1 a {MAX_PAGES} páginas.")
                 pages = []
                 for i, page in enumerate(doc):
                     text = page.get_text(sort=True).strip()

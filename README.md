@@ -19,7 +19,11 @@ Copy-Item .env.example .env
 
 Abra o [Google AI Studio](https://aistudio.google.com/api-keys) e consulte a área de chaves de API. Se a chave anterior não estiver disponível para cópia, crie uma nova. Nesta cópia do projeto não há arquivo `.env` configurado; depois de copiá-lo do exemplo, preencha `GEMINI_API_KEY` no `.env` local. Mantenha a chave no servidor: não a inclua no frontend, no Git ou em mensagens. O `.env` é ignorado pelo Git.
 
-O modelo padrão é `gemini-3.6-flash` e pode ser alterado com `GEMINI_MODEL`. Reinicie a API após mudar o ambiente.
+O modelo padrão é `gemini-3.8-flash` e pode ser alterado com `GEMINI_MODEL`. Em indisponibilidade temporária, o pipeline tenta `gemini-3.7-flash`, configurável por `GEMINI_FALLBACK_MODELS` (lista separada por vírgulas; vazio desativa). Use modelos disponíveis na faixa gratuita da sua conta. As cotas continuam valendo; a aplicação não ativa faturamento nem garante disponibilidade. Reinicie a API após mudar o ambiente.
+
+PDFs de até 300 páginas e 20 MB são analisados em blocos de até 60 mil caracteres, 20 páginas e 4 páginas visuais por chamada, mantendo os números originais. O limite total é de 2 milhões de caracteres. Os blocos concluídos ficam salvos em `data/checkpoints/`; **Tentar novamente** reaproveita esses resultados após uma falha ou reinício. Alterações no conteúdo, prompt, schema ou modelos invalidam o cache correspondente. Há três tentativas por modelo para erros transitórios, timeout de 90 segundos por chamada e intervalo mínimo padrão de 15 segundos entre chamadas (`GEMINI_REQUEST_INTERVAL`). Ajuste o intervalo conforme as cotas da conta.
+
+Os critérios podem reunir várias evidências. Formulações distintas entre blocos são preservadas e sinalizadas para revisão; a ferramenta não escolhe automaticamente qual condição prevalece. O envio de vários arquivos continua mesmo quando um deles é rejeitado.
 
 No primeiro terminal:
 
@@ -39,6 +43,7 @@ Para executar com um único servidor após compilar:
 
 ```powershell
 npm run build
+npm run test:upload
 .\.venv\Scripts\python.exe -m uvicorn backend.app:app --host 127.0.0.1 --port 8001
 ```
 
@@ -61,7 +66,7 @@ backend/                  API, documentos, IA, comparação, banco e relatórios
 src/                      Interface React, TypeScript e CSS responsivo
 tests/                    Testes de leitura, evidências e integração da API
 scripts/                  Geração de artefatos e verificação no navegador
-docs/                     Arquitetura e roteiro para a gravação da equipe
+docs/                     Arquitetura, revisão e roteiro do vídeo final
 Projeto_Final_Artefatos/  Relatório técnico, pitch, exemplos fictícios e ZIP
 .github/workflows/        Verificação automatizada do código
 ```
@@ -95,11 +100,19 @@ No Windows, o navegador usa Edge em modo sem janela. Em Linux, instale Chromium 
 
 - [Relatório técnico](Projeto_Final_Artefatos/InsurMinds_Relatorio_Tecnico.pdf).
 - [Pitch Deck](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.pptx).
-- [Roteiro para gravação](docs/ROTEIRO.md). O vídeo anterior foi removido e será gravado pela equipe.
+- [Roteiro do vídeo final](docs/ROTEIRO.md) e [vídeo narrado](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.mp4), com navegação real e PDFs fictícios analisados pelo Gemini 3.8.
 - Código-fonte e materiais em `Projeto_Final_Artefatos/InsurMinds_Codigo_Fonte.zip`. Para atualizar o ZIP: `py -3.14 scripts/build_delivery.py --zip-only`.
 - Repositório público: https://github.com/vicTmm/i2a2-desafio-final. A equipe concluiu os testes funcionais desta versão; a precisão em apólices reais ainda requer avaliação especializada.
 
 O fluxo de extração foi testado com o Gemini usando os documentos fictícios do projeto. Isso confirma o funcionamento da integração, mas não mede a precisão em apólices reais de mercado; essa avaliação ainda requer revisão especializada.
+
+Para testar PDFs reais pela API com armazenamento isolado e retomada entre execuções:
+
+```bash
+.venv/bin/python scripts/check_real_policies.py /caminho/apolice1.pdf /caminho/apolice2.pdf
+```
+
+Use `--preflight-only` para testar leitura e divisão sem chamar a IA. Os documentos, checkpoints e resultados privados ficam em `tmp/real-policies/processed/`, ignorados pelo Git. Quando duas ou mais análises concluem, o roteiro verifica também comparação e exportações. O teste real consome a cota da conta configurada. A [revisão das quatro apólices reais](docs/REVISAO_APOLICES_REAIS.md) registra o diagnóstico e a validação das mudanças.
 
 Prazo informado no enunciado: **06/10/2026 às 23h59**.
 

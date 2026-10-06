@@ -31,8 +31,8 @@ def build_pdfs():
                 doc[0].get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6)).save(str(examples / "Apolice_Aurora_Pagina_1.png"))
     s = styles()
     s["BodyText"].fontSize = 10
-    s["BodyText"].leading = 15
-    s["BodyText"].spaceAfter = 9
+    s["BodyText"].leading = 14
+    s["BodyText"].spaceAfter = 8
     s["Heading2"].spaceBefore = 17
     s["Heading2"].spaceAfter = 10
     s["Heading2"].keepWithNext = True
@@ -40,7 +40,7 @@ def build_pdfs():
     code = ParagraphStyle("Code", fontName="Courier", fontSize=8, leading=12, backColor=colors.HexColor("#f0f3eb"), borderPadding=10, spaceAfter=14)
     bufpath = OUT / "InsurMinds_Relatorio_Tecnico.pdf"
     doc = SimpleDocTemplate(str(bufpath), pagesize=A4, leftMargin=48, rightMargin=48, topMargin=43, bottomMargin=45, title="InsurMinds - Relatório Técnico", author="Equipe InsurMinds")
-    story = [Spacer(1, 70), Paragraph("INSURMINDS", s["Brand"]), Paragraph(escape("Plataforma inteligente para análise e comparação de apólices D&O"), s["Title"]), Spacer(1, 22), Paragraph("Relatório técnico | Projeto Final I2A2 2026", s["Heading2"]), Paragraph("Revisado em: 30/09/2026", s["BodyText"]), Spacer(1, 34), Paragraph("MVP local com extração estruturada por IA, evidências por página e comparação documental reproduzível.", s["BodyText"]), Spacer(1, 25), Paragraph("Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.", s["BodyText"]), Paragraph("Situação da validação: o fluxo foi testado com Gemini e documentos fictícios do projeto. A precisão em apólices reais de mercado ainda requer avaliação especializada. O repositório está público.", s["BodyText"]), PageBreak()]
+    story = [Spacer(1, 70), Paragraph("INSURMINDS", s["Brand"]), Paragraph(escape("Plataforma inteligente para análise e comparação de apólices D&O"), s["Title"]), Spacer(1, 22), Paragraph("Relatório técnico | Projeto Final I2A2 2026", s["Heading2"]), Paragraph("Revisado em: 05/10/2026", s["BodyText"]), Spacer(1, 34), Paragraph("MVP local com extração estruturada por IA, evidências por página e comparação documental reproduzível.", s["BodyText"]), Spacer(1, 25), Paragraph("Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.", s["BodyText"]), Paragraph("Situação da validação: dois PDFs fictícios foram analisados pelo Gemini 3.8 Flash: 16 critérios com evidências verificadas em cada documento; comparação com 10 diferenças e exportações PDF/JSON aprovadas. A precisão em apólices reais de mercado ainda requer avaliação especializada. O repositório está público.", s["BodyText"]), PageBreak()]
     content = (ROOT / "docs" / "ARQUITETURA.md").read_text(encoding="utf-8")
     content = re.sub(r"```mermaid.*?```", "```\nInterface React\n    API Starlette\n        Recepção e leitura PDF / imagem\n        Extração multimodal Gemini\n        Validação de dados e evidências\n    SQLite e arquivos locais\n        Comparação de critérios\n        PDF / JSON e consulta contextual\n```", content, flags=re.S)
     blocks = re.split(r"\n\s*\n", content)
@@ -73,7 +73,7 @@ def build_zip():
     OUT.mkdir(exist_ok=True)
     archive = OUT / "InsurMinds_Codigo_Fonte.zip"
     folders = ["backend", "src", "public", "tests", "scripts", "docs", ".github", ".impeccable", "Projeto_Final_Artefatos"]
-    root_files = ["README.md", "DESIGN.md", "PRODUCT.md", "components.json", "LICENSE", "requirements.txt", "package.json", "package-lock.json", "tsconfig.json", "vite.config.ts", "index.html", ".env.example", ".gitignore"]
+    root_files = ["README.md", "DESIGN.md", "PRODUCT.md", "components.json", "LICENSE", "requirements.txt", "package.json", "package-lock.json", "tsconfig.json", "vite.config.ts", "index.html", ".env.example", ".gitignore", ".gitattributes"]
     candidates = [ROOT / f for f in root_files]
     for folder in folders:
         candidates.extend((ROOT / folder).rglob("*"))
