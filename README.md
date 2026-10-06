@@ -79,7 +79,7 @@ Para executar upload, extração real, comparação e exportações em uma bibli
 .venv/bin/python scripts/check_documents.py
 ```
 
-Esse comando consome a cota da conta configurada. Os resultados ficam em `tmp/document-checks/`, sem alterar a biblioteca principal. O roteiro também aceita caminhos de outros documentos e `--data-dir` para escolher a biblioteca de teste.
+Esse comando consome a cota da conta configurada. Os resultados ficam em `tmp/document-checks/`, sem alterar a biblioteca principal. O script também aceita caminhos de outros documentos e `--data-dir` para escolher a biblioteca de teste.
 
 As verificações opcionais de interface e acessibilidade estão descritas em [docs/VALIDACAO.md](docs/VALIDACAO.md).
 
@@ -96,7 +96,7 @@ Arquivos e resultados permanecem em `data/`. O conteúdo usado na extração e n
 - [Relatório técnico](Projeto_Final_Artefatos/InsurMinds_Relatorio_Tecnico.pdf).
 - [System Design editável](Projeto_Final_Artefatos/InsurMinds_System_Design.docx).
 - [Apresentação com oito slides](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.pptx).
-- [Vídeo narrado da aplicação](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.mp4) e [roteiro](docs/ROTEIRO.md).
+- [Vídeo narrado da aplicação](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.mp4).
 - [Código-fonte e materiais da entrega](Projeto_Final_Artefatos/InsurMinds_Codigo_Fonte.zip).
 
 Todos os entregáveis estão disponíveis. As instruções para regenerá-los estão em [Projeto_Final_Artefatos/README.md](Projeto_Final_Artefatos/README.md).

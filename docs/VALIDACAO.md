@@ -10,7 +10,7 @@ Para repetir o fluxo, execute `python scripts/check_documents.py` com o ambiente
 
 ## Interface e acessibilidade
 
-Os roteiros opcionais requerem Python Playwright. Instale-o no ambiente virtual:
+Os scripts opcionais requerem Python Playwright. Instale-o no ambiente virtual:
 
 ```bash
 python -m pip install playwright
@@ -30,14 +30,14 @@ $env:DATA_DIR = 'tmp/ui-checks'
 python -m uvicorn backend.app:app --host 127.0.0.1 --port 8003
 ```
 
-Em outro terminal, execute ambos os roteiros contra essa API, com a interface compilada por `npm run build`. Em macOS/Linux:
+Em outro terminal, execute ambos os scripts contra essa API, com a interface compilada por `npm run build`. Em macOS/Linux:
 
 ```bash
 APP_URL=http://127.0.0.1:8003 python scripts/check_ui.py
 APP_URL=http://127.0.0.1:8003 python scripts/check_design.py
 ```
 
-No PowerShell, defina `$env:APP_URL = 'http://127.0.0.1:8003'` e execute os mesmos comandos `python`. No Windows, os roteiros usam Edge por padrão; defina `BROWSER_CHANNEL=chromium` para usar o navegador instalado pelo Playwright.
+No PowerShell, defina `$env:APP_URL = 'http://127.0.0.1:8003'` e execute os mesmos comandos `python`. No Windows, os scripts usam Edge por padrão; defina `BROWSER_CHANNEL=chromium` para usar o navegador instalado pelo Playwright.
 
 `check_ui.py` verifica biblioteca, busca, seleção, comparação, evidências, exportação e histórico. `check_design.py` verifica foco, erros, acessibilidade e telas de 320 a 1440 pixels. Os arquivos de QA ficam em `tmp/`, ignorados pelo Git.
 
