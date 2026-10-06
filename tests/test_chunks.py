@@ -43,11 +43,11 @@ class ChunkTests(unittest.TestCase):
         self.assertEqual(sum(len(c) for c in scans), 25)
         self.assertTrue(all(len(c) <= agents.CHUNK_IMAGES for c in scans))
 
-    def test_accepts_market_sized_pdf(self):
+    def test_accepts_large_pdf_within_limits(self):
         with pymupdf.open() as doc:
             for _ in range(114):
                 doc.new_page().insert_text((50, 50), "Policy D&O " * 12)
-            pages, _ = read_document(doc.tobytes(), "market.pdf")
+            pages, _ = read_document(doc.tobytes(), "large.pdf")
         self.assertEqual(len(pages), 114)
         self.assertEqual(pages[-1]["page"], 114)
 

@@ -7,7 +7,121 @@ from PIL import Image, ImageDraw, ImageFont
 P=Path(__file__).resolve().parents[1]/'Projeto_Final_Artefatos/InsurMinds_System_Design.docx'
 N={'w':'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
 E.register_namespace('w',N['w'])
-updates={20:'STATUS · MVP local validado',24:'LAST UPDATED · 05/10/2026',29:'Revisão especializada de precisão pendente',36:'Limites: 20 MB, 300 páginas e 2 milhões de caracteres. O processamento usa blocos de até 60 mil caracteres, 20 páginas e 4 imagens. Evidências textuais são verificadas localmente; interpretações e leituras visuais exigem revisão humana.',51:'Apólices D&O são extensas, heterogêneas e redigidas em linguagem jurídica. Comparar limites, franquias, coberturas e exclusões exige rastrear cada condição até sua página de origem.',77:'Extrai JSON por bloco; retoma checkpoints.',78:'Checkpoints locais / API Gemini',88:'A recepção valida conteúdo, tamanho, PDF criptografado e limites. A aplicação deve operar em loopback, sem autenticação ou isolamento multiusuário.',90:'Cada bloco é enviado ao Gemini 3.8 Flash. Pydantic valida a estrutura e o verificador confere as citações nas páginas originais. A consolidação preserva múltiplas evidências e valores divergentes em variants, com needs_review.',92:'Timeout de 90 segundos, até três tentativas por modelo, espera exponencial e intervalo mínimo de 15 segundos. Fallback para Gemini 3.7 em indisponibilidade, sem contornar cotas. Checkpoints atômicos permitem retomar blocos concluídos.',109:'do_policy, uncertain ou other.',121:'Primeira citação; evidence contém todas as referências.',125:'Página original da primeira referência.',134:'Estados: queued, reading, extracting, ready e error. Comparações preservam uma fotografia dos fatos e usam um catálogo estável de 16 campos.',135:'O registro guarda modelo configurado, models_used, progresso completed_chunks/total_chunks/cached_chunks, páginas, fatos, variants, needs_review e avisos.',142:'Exemplos são idempotentes por IDs fixos. Uploads recebem UUID; blocos já concluídos podem ser reutilizados por hash de conteúdo, prompt, schema e modelos. A comparação é determinística e não considera a numeração da página ao comparar valores.',147:'Novo UUID; reutiliza checkpoints compatíveis.',150:'Retries, fallback e retomada; error se esgotados.',156:'Registra models_used e invalida checkpoints incompatíveis.',163:'GEMINI_API_KEY permanece no servidor. GEMINI_MODEL define o modelo principal e GEMINI_FALLBACK_MODELS define as alternativas. O ZIP e o Git excluem .env, data e documentos privados.',221:'Validação funcional concluída com dois PDFs fictícios e Gemini 3.8 Flash: 16 critérios com evidências verificadas por documento, 10 diferenças e exportações PDF/JSON aprovadas. Registro: Validacao_IA_Exemplos.json. Suíte: 32 testes Python e um teste Node, build e QA da interface. A precisão contratual em documentos de mercado permanece sujeita à revisão especializada.',225:'M1 concluído',226:'Dois PDFs fictícios / IA real',227:'Extração, comparação e exportações aprovadas'}
+updates = {20: 'STATUS · MVP validado',
+ 22: 'RESPONSÁVEL · InsurMinds',
+ 24: 'REVISADO EM · 06/10/2026',
+ 26: 'Autores',
+ 28: 'Validação',
+ 29: 'Funcional com os PDFs fictícios do projeto',
+ 30: 'Documentação',
+ 32: 'Escopo',
+ 34: '1 Resumo',
+ 36: 'Limites: 20 MB, 300 páginas e 2 milhões de caracteres. O processamento usa blocos de até 60 mil '
+     'caracteres, 20 páginas e 4 imagens. Evidências textuais são verificadas localmente; interpretações e '
+     'leituras visuais exigem revisão humana.',
+ 38: '2 Objetivos e escopo',
+ 39: 'Objetivos',
+ 40: 'Fora do escopo',
+ 50: '3 Contexto e problema',
+ 51: 'Apólices D&O são extensas, heterogêneas e redigidas em linguagem jurídica. Comparar limites, '
+     'franquias, coberturas e exclusões exige rastrear cada condição até sua página de origem.',
+ 53: '4 Arquitetura',
+ 58: 'Componentes',
+ 60: 'Componente',
+ 61: 'Responsabilidade',
+ 62: 'Persistência',
+ 63: 'Tratamento de falhas',
+ 77: 'Extrai JSON por bloco; retoma checkpoints.',
+ 78: 'Checkpoints locais / API Gemini',
+ 86: '5 Fluxo de processamento',
+ 88: 'A recepção valida conteúdo, tamanho, PDF criptografado e limites. A aplicação deve operar em loopback, '
+     'sem autenticação ou isolamento multiusuário.',
+ 90: 'Cada bloco é enviado ao Gemini 3.8 Flash. Pydantic valida a estrutura e o verificador confere as '
+     'citações nas páginas originais. A consolidação preserva múltiplas evidências e valores divergentes em '
+     'variants, com needs_review.',
+ 92: 'Timeout de 90 segundos, até três tentativas por modelo, espera exponencial e intervalo mínimo de 15 '
+     'segundos. Fallback para Gemini 3.7 em indisponibilidade, sem contornar cotas. Checkpoints atômicos '
+     'permitem retomar blocos concluídos.',
+ 95: '6 Contratos de dados',
+ 96: 'Registro público da análise',
+ 98: 'Campo',
+ 99: 'Tipo',
+ 100: 'Obrigatório',
+ 101: 'Descrição',
+ 102: 'id',
+ 104: 'Sim',
+ 106: 'status',
+ 108: 'Sim',
+ 109: 'queued, reading, extracting, ready ou error.',
+ 112: 'Sim',
+ 116: 'Não',
+ 120: 'Não',
+ 121: 'Primeira citação; evidence contém todas as referências.',
+ 124: 'Não',
+ 125: 'Página original da primeira referência.',
+ 128: 'Sim',
+ 131: 'Garantias do contrato',
+ 134: 'Estados: queued, reading, extracting, ready e error. Comparações preservam uma fotografia dos fatos e '
+      'usam um catálogo estável de 16 campos.',
+ 135: 'O registro guarda modelo configurado, models_used, progresso '
+      'completed_chunks/total_chunks/cached_chunks, páginas, fatos, variants, needs_review e avisos.',
+ 140: '7 Consistência e retomada',
+ 142: 'Exemplos são idempotentes por IDs fixos. Uploads recebem UUID; blocos já concluídos podem ser '
+      'reutilizados por hash de conteúdo, prompt, schema e modelos. A comparação é determinística e não '
+      'considera a numeração da página ao comparar valores.',
+ 143: 'Situação',
+ 144: 'Comportamento',
+ 145: 'Finalidade',
+ 147: 'Novo UUID; reutiliza checkpoints compatíveis.',
+ 150: 'Retries, fallback e retomada; error se esgotados.',
+ 156: 'Registra models_used e invalida checkpoints incompatíveis.',
+ 159: '8 Dados e configuração',
+ 163: 'GEMINI_API_KEY permanece no servidor. GEMINI_MODEL define o modelo principal e GEMINI_FALLBACK_MODELS '
+      'define as alternativas. O ZIP e o Git excluem .env, data e documentos privados.',
+ 168: '9 Operação local',
+ 169: 'Sinal',
+ 170: 'Verificação',
+ 171: 'Responsável',
+ 172: 'Cobertura',
+ 174: 'Estado de cada análise na biblioteca.',
+ 176: 'Interface',
+ 178: 'Progresso dos blocos na análise.',
+ 180: 'Interface',
+ 182: 'Erro acionável e nova tentativa.',
+ 184: 'API e interface',
+ 186: 'Chave apenas no ambiente do servidor.',
+ 188: 'Configuração',
+ 190: 'Suíte e registro dos PDFs de demonstração.',
+ 192: 'Testes',
+ 195: '10 Decisões de implementação',
+ 198: 'Alternativa',
+ 199: 'Finalidade',
+ 200: 'Decisão no MVP',
+ 214: '11 Limites da interpretação',
+ 215: 'A comparação identifica diferenças de texto e não determina equivalência jurídica.',
+ 216: 'Citações verificadas confirmam presença textual; a interpretação é conferida pelo usuário.',
+ 217: 'Informações ausentes permanecem não identificadas, sem presumir cobertura ou exclusão.',
+ 218: 'Leituras de páginas rasterizadas e valores divergentes são sinalizados para revisão.',
+ 220: '12 Validação do projeto',
+ 221: 'Os dois PDFs fictícios foram processados pelo Gemini 3.8 Flash, com 16 critérios e evidências '
+      'verificadas por documento. A comparação apresentou 10 diferenças e nenhuma ausência; as exportações '
+      'PDF e JSON passaram. O registro está em Validacao_IA_Exemplos.json. A suíte aprovou 32 testes Python '
+      'e um teste Node, além do build e da verificação de interface em desktop e celular.',
+ 222: 'Verificação',
+ 223: 'Evidência',
+ 224: 'Resultado',
+ 225: 'Extração com IA',
+ 226: 'Dois PDFs fictícios / Gemini 3.8',
+ 227: '16 critérios verificados por documento',
+ 228: 'Comparação',
+ 229: '16 campos lado a lado',
+ 230: '10 diferenças e nenhuma ausência',
+ 231: 'Exportações',
+ 232: 'PDF e JSON',
+ 233: 'Conteúdo e formato aprovados',
+ 234: 'Interface e código',
+ 235: 'Desktop, celular e suíte',
+ 236: 'Build e testes aprovados'}
 with ZipFile(P) as z: parts={i.filename:z.read(i.filename) for i in z.infolist()}
 # Diagrama específico do projeto substitui a figura genérica do template.
 im=Image.new('RGB',(1800,900),'#f5f9fc');draw=ImageDraw.Draw(im)
@@ -44,10 +158,12 @@ for i,value in updates.items():
  if ts:
   ts[0].text=value
   for t in ts[1:]:t.text=''
-for i in [53,54,55,86,87,131,132,133,134,135]:
+for i in [53,54,55,86,87,131,132,133,134,135,159,160,161,162,163,164,195,196,197,214,215,216,217]:
  pp=ps[i].find('w:pPr',N)
  if pp is None:pp=E.SubElement(ps[i],'{'+N['w']+'}pPr')
- if pp.find('w:keepNext',N) is None:E.SubElement(pp,'{'+N['w']+'}keepNext')
+ keep=pp.find('w:keepNext',N)
+ if keep is None:keep=E.SubElement(pp,'{'+N['w']+'}keepNext')
+ keep.set('{'+N['w']+'}val','1')
 parts['word/document.xml']=E.tostring(r,encoding='utf-8',xml_declaration=True)
 # Títulos pretos, conforme o estilo do relatório técnico.
 r=E.fromstring(parts['word/styles.xml'])

@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import os
 import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -71,7 +72,7 @@ async def lifespan(app):
         await asyncio.gather(*tasks, return_exceptions=True)
 
 async def health(request):
-    return JSONResponse({"status": "ok", "ai_configured": agents.configured(), "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.8-flash"), "fields": FIELDS})
+    return JSONResponse({"status": "ok", "ai_configured": agents.configured(), "model": os.getenv("GEMINI_MODEL", "gemini-3.8-flash"), "fields": FIELDS})
 
 async def policies(request):
     return JSONResponse([public(p) for p in storage.all_items("policies")])
@@ -98,8 +99,7 @@ async def upload(request: Request):
     extension = {"application/pdf": ".pdf", "image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp"}[mime]
     path = storage.root() / (item_id + extension)
     path.write_bytes(data)
-    actual_mime = mime
-    policy = {"id": item_id, "title": Path(filename).stem, "filename": filename, "mime": actual_mime, "file_path": str(path), "status": "queued", "demo": False, "created_at": now(), "facts": [], "pages": pages, "warnings": [], "model": __import__('os').getenv("GEMINI_MODEL", "gemini-3.8-flash")}
+    policy = {"id": item_id, "title": Path(filename).stem, "filename": filename, "mime": mime, "file_path": str(path), "status": "queued", "demo": False, "created_at": now(), "facts": [], "pages": pages, "warnings": [], "model": os.getenv("GEMINI_MODEL", "gemini-3.8-flash")}
     storage.save("policies", policy)
     task = asyncio.create_task(process(item_id, data))
     tasks.add(task)

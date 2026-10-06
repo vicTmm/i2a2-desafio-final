@@ -1,125 +1,110 @@
 # InsurMinds
 
-Plataforma de análise e comparação de apólices D&O com IA generativa, desenvolvida para o Projeto Final do Instituto de Inteligência Artificial Aplicada (I2A2), turma 2026.
+Ferramenta local para ler e comparar apólices D&O em PDF ou imagem, desenvolvida para o Projeto Final I2A2 2026. O Gemini extrai 16 critérios com trechos e páginas de origem. A interface permite conferir as evidências, comparar de duas a quatro apólices, consultar os dados e exportar PDF ou JSON.
 
-O MVP recebe PDFs ou imagens, extrai 16 critérios com referências às páginas de origem, armazena os resultados e compara de duas a quatro apólices. Também oferece busca, consulta contextual com IA, histórico e exportação para PDF e JSON.
+A leitura usa o conteúdo do documento, sem exigir um formulário fixo. Os PDFs fictícios Aurora e Vértice acompanham o projeto para demonstração e foram processados pela integração real com IA.
 
-## Execução rápida
+## Instalação
 
-Requisitos: Node.js 24 e Python 3.14, versões usadas na validação. O modo de exemplos funciona sem chave e carrega documentos fictícios com resultados pré-preenchidos. Para analisar um arquivo com Gemini, configure uma chave de API.
+Requisitos: Node.js 24 e Python 3.14.
+
+**macOS / Linux**
+
+```bash
+npm ci
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+cp .env.example .env
+```
+
+**Windows / PowerShell**
 
 ```powershell
-npm install
+npm ci
 py -3.14 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-### Como obter e configurar a chave Gemini
+Copie `.env.example` apenas na primeira configuração. Se `.env` já existe, preserve suas configurações. Para analisar novos documentos, preencha `GEMINI_API_KEY` com uma chave do [Google AI Studio](https://aistudio.google.com/api-keys). A chave permanece no servidor e o `.env` é ignorado pelo Git.
 
-Abra o [Google AI Studio](https://aistudio.google.com/api-keys) e consulte a área de chaves de API. Se a chave anterior não estiver disponível para cópia, crie uma nova. Nesta cópia do projeto não há arquivo `.env` configurado; depois de copiá-lo do exemplo, preencha `GEMINI_API_KEY` no `.env` local. Mantenha a chave no servidor: não a inclua no frontend, no Git ou em mensagens. O `.env` é ignorado pelo Git.
+O modelo padrão é `gemini-3.8-flash`; `GEMINI_MODEL` permite alterá-lo. `GEMINI_FALLBACK_MODELS` define a alternativa em caso de indisponibilidade, e `GEMINI_REQUEST_INTERVAL` controla o intervalo entre chamadas. Reinicie o servidor após mudar essas variáveis. A extração depende da disponibilidade e da cota da conta Gemini.
 
-O modelo padrão é `gemini-3.8-flash` e pode ser alterado com `GEMINI_MODEL`. Em indisponibilidade temporária, o pipeline tenta `gemini-3.7-flash`, configurável por `GEMINI_FALLBACK_MODELS` (lista separada por vírgulas; vazio desativa). Use modelos disponíveis na faixa gratuita da sua conta. As cotas continuam valendo; a aplicação não ativa faturamento nem garante disponibilidade. Reinicie a API após mudar o ambiente.
+## Executar
 
-PDFs de até 300 páginas e 20 MB são analisados em blocos de até 60 mil caracteres, 20 páginas e 4 páginas visuais por chamada, mantendo os números originais. O limite total é de 2 milhões de caracteres. Os blocos concluídos ficam salvos em `data/checkpoints/`; **Tentar novamente** reaproveita esses resultados após uma falha ou reinício. Alterações no conteúdo, prompt, schema ou modelos invalidam o cache correspondente. Há três tentativas por modelo para erros transitórios, timeout de 90 segundos por chamada e intervalo mínimo padrão de 15 segundos entre chamadas (`GEMINI_REQUEST_INTERVAL`). Ajuste o intervalo conforme as cotas da conta.
-
-Os critérios podem reunir várias evidências. Formulações distintas entre blocos são preservadas e sinalizadas para revisão; a ferramenta não escolhe automaticamente qual condição prevalece. O envio de vários arquivos continua mesmo quando um deles é rejeitado.
-
-No primeiro terminal:
-
-```powershell
-.\.venv\Scripts\python.exe -m uvicorn backend.app:app --host 127.0.0.1 --port 8001
-```
-
-No segundo terminal:
-
-```powershell
-npm run dev
-```
-
-Acesse http://127.0.0.1:5173. Em Linux/macOS, substitua `py -3.14` por `python3`, use `.venv/bin/python` e `cp .env.example .env`.
-
-Para executar com um único servidor após compilar:
-
-```powershell
-npm run build
-npm run test:upload
-.\.venv\Scripts\python.exe -m uvicorn backend.app:app --host 127.0.0.1 --port 8001
-```
-
-Nesse modo, acesse http://127.0.0.1:8001. O backend serve o conteúdo de `dist/` quando essa pasta existe no início do processo. Use um único worker neste MVP.
-
-## Demonstração
-
-1. Clique em **Carregar exemplos** na visão geral. Aurora e Vértice são apólices fictícias, identificadas na interface; não representam ofertas de seguro.
-2. Selecione as duas apólices e clique em **Comparar apólices**.
-3. Ative o filtro de diferenças, abra o limite de responsabilidade e confira o trecho e a página de origem.
-4. Exporte o PDF e recupere o resultado pelo histórico.
-5. Para demonstrar uma chamada real ao Gemini, configure a chave, abra **Nova análise** e envie um PDF ou imagem. Os arquivos em `Projeto_Final_Artefatos/exemplos/` são materiais fictícios; carregar os exemplos na interface apenas insere dados de demonstração e não chama o modelo.
-
-Os arquivos enviados ficam em `data/`, junto ao SQLite, e permanecem após reiniciar o serviço. O conteúdo usado na extração e na consulta é enviado ao Google Gemini. O MVP é local, não tem autenticação nem separação entre usuários; não o exponha publicamente sem adaptar a arquitetura.
-
-## Tecnologias e organização
-
-```text
-backend/                  API, documentos, IA, comparação, banco e relatórios
-src/                      Interface React, TypeScript e CSS responsivo
-tests/                    Testes de leitura, evidências e integração da API
-scripts/                  Geração de artefatos e verificação no navegador
-docs/                     Arquitetura, revisão e roteiro do vídeo final
-Projeto_Final_Artefatos/  Relatório técnico, pitch, exemplos fictícios e ZIP
-.github/workflows/        Verificação automatizada do código
-```
-
-Frontend: React 19, TypeScript, Vite, Tailwind CSS 4, shadcn/ui (Radix), Lucide e DM Sans. Backend: Python, Starlette, uvicorn, Pydantic, Google GenAI SDK, PyMuPDF, Pillow e SQLite. A integração usa Gemini GenerateContent com resposta JSON estruturada e leitura multimodal. Os relatórios usam ReportLab; os slides, PptxGenJS. As fontes são locais e não dependem de CDN.
-
-A interface usa tons neutros, navegação compacta e componentes reutilizáveis em `src/components/ui/`. O [sistema visual](DESIGN.md) registra cores, tipografia e padrões de interação. A revisão visual usou [Impeccable](https://github.com/pbakaus/impeccable), a [skill shadcn](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn) e Humanizer para revisar os textos em português.
-
-Consulte [a arquitetura, as decisões e as limitações](docs/ARQUITETURA.md). A comparação é textual e determinística: textos iguais não comprovam equivalência jurídica.
-
-## Testes
-
-```powershell
-npm run build
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
-
-O teste no navegador é opcional e requer os dois servidores em execução:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install playwright
-.\.venv\Scripts\python.exe scripts/check_ui.py
-.\.venv\Scripts\python.exe scripts/check_design.py
-```
-
-No Windows, o navegador usa Edge em modo sem janela. Em Linux, instale Chromium com `python -m playwright install chromium`. Capturas e resultados temporários ficam em `tmp/ui/`. Os testes do provedor usam respostas simuladas e não consomem a API. A precisão da extração em contratos reais ainda precisa ser avaliada por especialistas.
-
-`check_design.py` percorre estados de upload e erro, navegação por teclado, retorno de foco, contraste e telas de 320 a 1440 pixels. Capturas e resultados de acessibilidade ficam em `tmp/design-review/`. Os testes de navegador carregam exemplos e salvam comparações; para executá-los sem alterar sua biblioteca, inicie a API com `DATA_DIR` apontando para uma pasta temporária.
-
-## Entregáveis e situação
-
-- [Relatório técnico](Projeto_Final_Artefatos/InsurMinds_Relatorio_Tecnico.pdf).
-- [Pitch Deck](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.pptx).
-- [Roteiro do vídeo final](docs/ROTEIRO.md) e [vídeo narrado](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.mp4), com navegação real e PDFs fictícios analisados pelo Gemini 3.8.
-- Código-fonte e materiais em `Projeto_Final_Artefatos/InsurMinds_Codigo_Fonte.zip`. Para atualizar o ZIP: `py -3.14 scripts/build_delivery.py --zip-only`.
-- Repositório público: https://github.com/vicTmm/i2a2-desafio-final. A equipe concluiu os testes funcionais desta versão; a precisão em apólices reais ainda requer avaliação especializada.
-
-O fluxo de extração foi testado com o Gemini usando os documentos fictícios do projeto. Isso confirma o funcionamento da integração, mas não mede a precisão em apólices reais de mercado; essa avaliação ainda requer revisão especializada.
-
-Para testar PDFs reais pela API com armazenamento isolado e retomada entre execuções:
+Compile a interface e inicie o servidor na raiz do projeto:
 
 ```bash
-.venv/bin/python scripts/check_real_policies.py /caminho/apolice1.pdf /caminho/apolice2.pdf
+npm run build
+.venv/bin/python -m uvicorn backend.app:app --host 127.0.0.1 --port 8001
 ```
 
-Use `--preflight-only` para testar leitura e divisão sem chamar a IA. Os documentos, checkpoints e resultados privados ficam em `tmp/real-policies/processed/`, ignorados pelo Git. Quando duas ou mais análises concluem, o roteiro verifica também comparação e exportações. O teste real consome a cota da conta configurada. A [revisão das quatro apólices reais](docs/REVISAO_APOLICES_REAIS.md) registra o diagnóstico e a validação das mudanças.
+No Windows, use `.\.venv\Scripts\python.exe` no lugar de `.venv/bin/python`.
 
-Prazo informado no enunciado: **06/10/2026 às 23h59**.
+Abra **http://127.0.0.1:8001**. O servidor entrega a interface compilada e a API. Use um único processo de servidor.
 
-## Integrantes
+Para desenvolver a interface com atualização automática, mantenha a API em execução e rode `npm run dev` em outro terminal. Nesse modo, abra http://127.0.0.1:5173.
+
+## Testar a leitura dos PDFs
+
+1. Abra **Nova análise** e envie os dois PDFs de [exemplos](Projeto_Final_Artefatos/exemplos).
+2. Aguarde o estado **Analisado** e confira os critérios e suas evidências.
+3. Selecione os dois documentos e clique em **Comparar apólices**.
+4. Use o filtro de diferenças, abra um trecho de origem e exporte o PDF.
+5. Consulte a comparação novamente em **Histórico**.
+
+**Carregar exemplos** oferece uma demonstração imediata com dados pré-preenchidos e funciona sem chave. Essa ação não chama a IA; para testar a leitura, use o upload descrito acima.
+
+A execução registrada com Gemini 3.8 concluiu ambos os PDFs fictícios: 16 critérios com citações verificadas por documento, 10 diferenças textuais na comparação e exportações PDF/JSON aprovadas. O [registro de validação](Projeto_Final_Artefatos/Validacao_IA_Exemplos.json) acompanha a entrega.
+
+## Verificação
+
+```bash
+.venv/bin/python -m unittest discover -s tests -v
+npm run test:upload
+npm run build
+```
+
+A suíte contém 32 testes Python e um teste Node. Os testes automatizados do provedor usam respostas simuladas e não consomem a API.
+
+Para conferir a leitura dos exemplos sem chamar o Gemini:
+
+```bash
+.venv/bin/python scripts/check_documents.py --preflight-only
+```
+
+Para executar upload, extração real, comparação e exportações em uma biblioteca de teste isolada:
+
+```bash
+.venv/bin/python scripts/check_documents.py
+```
+
+Esse comando consome a cota da conta configurada. Os resultados ficam em `tmp/document-checks/`, sem alterar a biblioteca principal. O roteiro também aceita caminhos de outros documentos e `--data-dir` para escolher a biblioteca de teste.
+
+As verificações opcionais de interface e acessibilidade estão descritas em [docs/VALIDACAO.md](docs/VALIDACAO.md).
+
+## Arquitetura e limites
+
+React/TypeScript na interface; Starlette/Python na API; Gemini para extração e consulta; PyMuPDF/Pillow para leitura; SQLite e arquivos locais para persistência; ReportLab para os relatórios. Veja [a arquitetura](docs/ARQUITETURA.md), [o escopo do produto](PRODUCT.md) e [os padrões visuais](DESIGN.md).
+
+A entrada aceita até 20 MB, 300 páginas PDF e 2 milhões de caracteres. O processamento divide documentos em blocos, preserva as páginas e salva checkpoints para retomada após falhas. Informações divergentes mantêm suas evidências e recebem sinalização de revisão.
+
+Arquivos e resultados permanecem em `data/`. O conteúdo usado na extração e na consulta é enviado ao Gemini. A aplicação foi desenvolvida para uso local, sem autenticação ou separação entre usuários. A verificação de uma citação comprova sua presença textual; a interpretação deve ser conferida pelo usuário. A comparação identifica diferenças textuais e não recomenda contratação.
+
+## Entregáveis
+
+- [Relatório técnico](Projeto_Final_Artefatos/InsurMinds_Relatorio_Tecnico.pdf).
+- [System Design editável](Projeto_Final_Artefatos/InsurMinds_System_Design.docx).
+- [Apresentação com oito slides](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.pptx).
+- [Vídeo narrado da aplicação](Projeto_Final_Artefatos/InsurMinds_Projeto_Final.mp4) e [roteiro](docs/ROTEIRO.md).
+- [Código-fonte e materiais da entrega](Projeto_Final_Artefatos/InsurMinds_Codigo_Fonte.zip).
+
+Todos os entregáveis estão disponíveis. As instruções para regenerá-los estão em [Projeto_Final_Artefatos/README.md](Projeto_Final_Artefatos/README.md).
+
+Repositório: https://github.com/vicTmm/i2a2-desafio-final.
+
+## Equipe e licença
 
 Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.
 
-## Licença
-
-O código-fonte está sob [licença MIT](LICENSE). Os exemplos são sintéticos e autorais. Dependências e fontes mantêm suas próprias licenças. O repositório não inclui apólices reais de terceiros.
+Código sob [licença MIT](LICENSE). Os exemplos são sintéticos e autorais. Dependências e fontes mantêm suas próprias licenças.

@@ -9,9 +9,9 @@ O pacote anexo reúne código-fonte, relatório técnico, System Design editáve
 
 Repositório: https://github.com/vicTmm/i2a2-desafio-final
 
-Validação: 32 testes Python, um teste Node de upload, build e verificação da interface desktop/móvel aprovados. Os dois PDFs fictícios foram processados pelo Gemini 3.8 Flash, com 16 critérios e evidências verificadas por documento; comparação e exportações PDF/JSON aprovadas. A apólice privada de renovação da Tecnogeo também concluiu os seis blocos. As demais encontraram indisponibilidade ou cota do provedor, conforme registro de métricas. Apólices privadas e credenciais não fazem parte da entrega.
+Validação: 32 testes Python, um teste Node de upload, build e verificação da interface desktop/móvel aprovados. Os dois PDFs fictícios foram processados pelo Gemini 3.8 Flash, com 16 critérios e evidências verificadas por documento; comparação e exportações PDF/JSON aprovadas.
 
-O vídeo identifica os documentos fictícios e a narração sintética. A verificação de citações comprova presença textual; a precisão da interpretação contratual ainda exige revisão especializada.
+O vídeo identifica os documentos fictícios e a narração sintética. A verificação de citações comprova presença textual; a interpretação contratual deve ser conferida pelo usuário.
 
 Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.
 

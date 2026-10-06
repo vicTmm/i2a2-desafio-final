@@ -42,8 +42,7 @@ with sync_playwright() as p:
     assert (OUT / "comparison.pdf").read_bytes().startswith(b"%PDF")
     page.get_by_role("button", name="Histórico", exact=True).click()
     expect(page.locator(".history-item").first).to_be_visible()
-    page.get_by_role("button", name="Apólices", exact=False).first.click()
-    # Select the navigation item precisely to avoid other comparison buttons.
+    # Seleciona a navegação sem confundir com os botões de comparação.
     page.locator("nav").get_by_role("button", name="Apólices", exact=False).first.click()
     page.get_by_placeholder("Buscar apólice ou seguradora…").fill("Aurora")
     expect(page.locator(".policy-table tbody tr")).to_have_count(1)

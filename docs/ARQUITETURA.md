@@ -51,13 +51,13 @@ SQLite elimina a instalação de um banco separado e é suficiente para o worksp
 
 A leitura híbrida reduz o envio de imagens em PDFs pesquisáveis. A heurística de 80 caracteres pode falhar em páginas com texto decorativo ou OCR ruim. Cada bloco contém no máximo 60 mil caracteres, 20 páginas e 4 imagens. Páginas com texto acima do limite são divididas com sobreposição de 500 caracteres, mantendo o número original; nenhum trecho é cortado silenciosamente.
 
-Uma chamada estruturada por bloco permite analisar documentos longos. O modelo padrão é `gemini-3.8-flash`, configurável por `GEMINI_MODEL`, com alternativa `gemini-3.7-flash` em `GEMINI_FALLBACK_MODELS`. Deixar a variável vazia desativa a alternância. A disponibilidade e a faixa gratuita dependem da conta. A comparação determinística ignora a numeração das páginas ao comparar valores, mantém diferenças reproduzíveis e evita que uma segunda geração invente um ranking.
+Uma chamada estruturada por bloco permite analisar documentos longos. O modelo padrão é `gemini-3.8-flash`, configurável por `GEMINI_MODEL`, com alternativa `gemini-3.7-flash` em `GEMINI_FALLBACK_MODELS`. Deixar a variável vazia desativa a alternância. A disponibilidade e as cotas dependem da conta. A comparação determinística ignora a numeração das páginas ao comparar valores, mantém diferenças reproduzíveis e evita que uma segunda geração invente um ranking.
 
 As chamadas têm timeout de 90 segundos e até três tentativas por modelo, com espera exponencial e jitter para erros transitórios. As repetições internas do SDK são desativadas para evitar multiplicação de tentativas. Um fluxo serializado de chamadas respeita um intervalo mínimo de 15 segundos, configurável por `GEMINI_REQUEST_INTERVAL`. A alternância ocorre após indisponibilidade ou modelo não encontrado, nunca para contornar cotas ou erros de chave. Checkpoints gravados atomicamente usam hash do conteúdo do bloco, prompt, schema e modelos. Reprocessamentos e reinícios reutilizam os blocos concluídos; não há garantia de idempotência no provedor para chamadas interrompidas antes do checkpoint.
 
 ## Limites e proteção de dados
 
-O MVP aceita até 20 MB, 300 páginas PDF e 2 milhões de caracteres por documento. Páginas visuais são limitadas por bloco, sem o limite antigo de 20 por documento. PDF criptografado e formatos não reconhecidos são rejeitados. Um documento deve representar uma única apólice e suas condições coerentes.
+O MVP aceita até 20 MB, 300 páginas PDF e 2 milhões de caracteres por documento. Páginas visuais são limitadas por bloco. PDF criptografado e formatos não reconhecidos são rejeitados. Um documento deve representar uma única apólice e suas condições coerentes.
 
 A chave fica no `.env` do servidor e não é enviada ao navegador. Documentos são dados não confiáveis para o prompt. Não são disponibilizadas ferramentas de execução ao modelo. O servidor não inclui autenticação e deve operar em loopback, em um único processo. Embora o repositório seja público, a aplicação não deve ser exposta na Internet sem autenticação, isolamento por usuário, quotas, limite de requisições, políticas de retenção e revisão de segurança.
 
@@ -65,17 +65,14 @@ O código não configura uma política de retenção zero no provedor. O tratame
 
 Condições gerais podem descrever coberturas não contratadas. Evidências múltiplas e versões por bloco preservam passagens espalhadas, mas não comprovam que o resumo é completo ou correto. Valores equivalentes com redações diferentes aparecem como diferenças textuais. Não há normalização atuarial, jurídica ou cambial; condições que dependem de passagens em outros blocos precisam de revisão.
 
-## Validação e evolução
+## Validação funcional
 
-Testes automatizados cobrem leitura de PDF e imagem, PDFs criptografados, limites, dados ausentes, evidências falsas, persistência, comparação e exportação. O teste automatizado de upload usa um provedor simulado. A execução real de 05/10/2026 com Gemini 3.8 Flash concluiu os dois PDFs fictícios: 16 critérios com evidências textuais verificadas em cada documento, 10 diferenças entre 16 campos e nenhuma ausência. As exportações PDF e JSON passaram. O registro está em `Projeto_Final_Artefatos/Validacao_IA_Exemplos.json`. Foram aprovados 32 testes Python e um teste Node de upload, além do build e da verificação de interface em desktop e celular. As quatro apólices privadas passaram pelos limites; a renovação Tecnogeo concluiu seis blocos com 15 critérios verificados, um ausente e 14 sinalizados para revisão. As demais falharam por indisponibilidade ou cota. Métricas estão em `Validacao_Apolices_Reais.json`. Isso não comprova a precisão em apólices reais; essa avaliação requer um conjunto de documentos apropriado e revisão especializada.
-
-Próximos passos: corpus público licenciado com anotações de especialistas, métricas por campo, avaliação de OCR, divisão semântica de documentos longos, revisão editável e versionada, fila durável, autenticação e comparação semântica apoiada nas evidências.
+Testes automatizados cobrem leitura de PDF e imagem, PDFs criptografados, limites, dados ausentes, evidências falsas, persistência, comparação e exportação. O teste automatizado de upload usa um provedor simulado. A execução real de 05/10/2026 com Gemini 3.8 Flash concluiu os dois PDFs fictícios: 16 critérios com evidências textuais verificadas em cada documento, 10 diferenças entre 16 campos e nenhuma ausência. As exportações PDF e JSON passaram. O registro está em `Projeto_Final_Artefatos/Validacao_IA_Exemplos.json`. Foram aprovados 32 testes Python e um teste Node de upload, além do build e da verificação de interface em desktop e celular. A validação utiliza os documentos fictícios autorais do projeto. A ferramenta confere a origem textual das informações; a interpretação contratual é conferida pelo usuário.
 
 ## Fontes
 
-- Enunciado do Projeto Final I2A2, fornecido pelo usuário, datado de 15/07/2026. Prazo informado: 06/10/2026 às 23h59.
+- Projeto Final I2A2 2026: leitura e comparação de apólices com IA generativa.
 - Google Gemini API, structured output: https://ai.google.dev/gemini-api/docs/structured-output
 - Google Gemini API, multimodal: https://ai.google.dev/gemini-api/docs/vision
 - Documentos de demonstração: criação sintética autoral do projeto em `backend/demo.py`. Aurora, Vértice e Horizonte são nomes fictícios, sem relação com contratos reais.
-- O endereço do Sebrae informado no enunciado não pôde ser acessado na preparação. O pitch segue o problema, solução, funcionamento, arquitetura, resultados de demonstração e próximos passos.
 - Repositório público: https://github.com/vicTmm/i2a2-desafio-final.

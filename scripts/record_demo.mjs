@@ -42,7 +42,7 @@ try{
  await hold('Exportação PDF e JSON','Relatório com os valores, evidências e limitações.','A exportação gera um relatório em PDF com valores, evidências e limitações. A mesma comparação pode ser obtida em JSON para auditoria ou integração.');
  await page.getByRole('button',{name:'Histórico',exact:true}).click();
  await hold('Histórico persistente','As comparações permanecem no SQLite local.','O histórico mantém as comparações no banco local. O arquivo original continua disponível para a conferência das evidências.');
- await title('Validação e próximos passos','32 testes Python + 1 teste Node aprovados\nBuild e interface verificados em desktop e celular\n\nPrecisão em apólices de mercado: revisão especializada pendente','A entrega passou por trinta e dois testes Python, um teste de upload em Node, build e verificação da interface. A precisão em apólices de mercado ainda depende de avaliação especializada.',16);
+ await title('Resultados do projeto','32 testes Python + 1 teste Node aprovados\nBuild e interface verificados em desktop e celular\n\n16 critérios por PDF fictício, comparação e exportações aprovadas','A entrega passou por trinta e dois testes Python, um teste de upload em Node, build e verificação da interface. Os dois PDFs fictícios foram analisados pela inteligência artificial, comparados e exportados. A interpretação deve ser conferida com as evidências.',16);
  if(errors.length)throw Error(errors.join('\n'));
 }finally{await context.close();await browser.close();}
 const source=await video.path();

@@ -1,7 +1,8 @@
-"""Teste real pela API, com armazenamento isolado e retomada entre execuções.
+"""Valida PDFs pela API em uma biblioteca isolada.
 
-Uso: .venv/bin/python scripts/check_real_policies.py arquivo1.pdf arquivo2.pdf
-Resultados privados e checkpoints ficam em tmp/real-policies/processed/.
+Sem caminhos, usa os dois PDFs fictícios do projeto.
+Use --preflight-only para conferir a leitura sem chamar o Gemini.
+Resultados e checkpoints ficam em tmp/document-checks/.
 """
 import argparse
 import asyncio
@@ -10,7 +11,8 @@ import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from starlette.testclient import TestClient
 from backend.app import app, tasks
 from backend import storage
@@ -25,8 +27,11 @@ async def tick():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("files", type=Path, nargs="+")
-    parser.add_argument("--data-dir", type=Path, default=Path("tmp/real-policies/processed"))
+    parser.add_argument("files", type=Path, nargs="*", default=[
+        ROOT / "Projeto_Final_Artefatos/exemplos/Apolice_Aurora_Ficticia.pdf",
+        ROOT / "Projeto_Final_Artefatos/exemplos/Apolice_Vertice_Ficticia.pdf",
+    ])
+    parser.add_argument("--data-dir", type=Path, default=ROOT / "tmp/document-checks")
     parser.add_argument("--preflight-only", action="store_true", help="Não faz chamadas à IA.")
     args = parser.parse_args()
     args.data_dir.mkdir(parents=True, exist_ok=True)

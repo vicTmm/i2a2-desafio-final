@@ -16,16 +16,16 @@ Aplicação local em React/TypeScript e Python/Starlette. Documentos e comparaç
 
 ## Users
 
-A interface atende à leitura e conferência documental. Perfil profissional específico e frequência de uso ainda não foram definidos pela equipe.
+A interface atende pessoas que precisam localizar informações, conferir evidências e comparar documentos de apólices D&O.
 
 ## Capabilities and Constraints
 
-Preservar biblioteca, busca, filtros, seleção, comparação, evidências, histórico, upload e exportação. Exemplos são fictícios e devem continuar identificados. Evidência textual localizada não comprova interpretação correta. A validação real da IA ainda consta como pendente na documentação.
+Biblioteca, busca, filtros, seleção, comparação, evidências, histórico, upload e exportação estão implementados. Os exemplos fictícios são identificados na interface. Os dois PDFs de demonstração foram processados pelo Gemini 3.8 Flash, com 16 critérios e evidências verificadas por documento. A correspondência textual da citação não substitui a conferência da interpretação.
 
 ## Brand Commitments
 
-Nome InsurMinds. Direção escolhida pelo usuário: minimalista, tons neutros e interface mais compacta. Textos em português, diretos e sem promessas de precisão não comprovadas. Aplicar Impeccable, shadcn e Humanizer.
+Nome InsurMinds. Interface minimalista, tons neutros e controles compactos. Textos diretos em português. Os padrões visuais estão em DESIGN.md e os componentes em src/components/ui/.
 
 ## Evidence on Hand
 
-README.md, docs/ARQUITETURA.md, backend/models.py, backend/demo.py e tests/test_pipeline.py descrevem as funcionalidades e os exemplos existentes. Não há métricas de precisão em contratos reais.
+README.md, docs/ARQUITETURA.md, backend/models.py, backend/demo.py e tests/ descrevem as funcionalidades e os exemplos existentes. Projeto_Final_Artefatos/Validacao_IA_Exemplos.json registra a execução real da IA sobre os PDFs fictícios. A demonstração não é uma avaliação de precisão em contratos de mercado.

@@ -37,8 +37,6 @@ if video.exists():
     for second in [7,24,43,65,90,116,int(duration-7)]:
         subprocess.run([str(ffmpeg),'-y','-ss',str(second),'-i',str(video),'-frames:v','1',str(TMP/f'frame-{second}.png')],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,check=True)
     video_status=f'vídeo H.264 de {duration:.1f} segundos'
-else:
-    video_status='vídeo aguardando gravação da equipe'
 print(f'Artefatos: PPTX íntegro, 8 slides, tabela editável; PDF íntegro; {video_status}.')
 
 with ZipFile(OUT/'InsurMinds_System_Design.docx') as z:
@@ -50,11 +48,14 @@ with ZipFile(OUT/'InsurMinds_System_Design.docx') as z:
 with ZipFile(OUT/'InsurMinds_Codigo_Fonte.zip') as z:
     assert z.testzip() is None
     required=['backend/checkpoints.py','src/lib/upload.ts','tests/test_chunks.py',
-              'scripts/check_real_policies.py','scripts/record_demo.mjs',
+              'scripts/check_documents.py','scripts/record_demo.mjs',
               'Projeto_Final_Artefatos/InsurMinds_Projeto_Final.mp4',
-              'Projeto_Final_Artefatos/Validacao_IA_Exemplos.json',
-              'Projeto_Final_Artefatos/Validacao_Apolices_Reais.json']
+              'Projeto_Final_Artefatos/Validacao_IA_Exemplos.json']
     for relative in required:
         assert z.read('insurminds/'+relative)==(ROOT/relative).read_bytes(),relative
+    for name in z.namelist():
+        relative = name.removeprefix('insurminds/')
+        assert (ROOT/relative).is_file(), f'Arquivo removido ainda no ZIP: {relative}'
+        assert z.read(name)==(ROOT/relative).read_bytes(), f'Arquivo desatualizado no ZIP: {relative}'
     assert not any('/data/' in n or '/tmp/' in n or '/node_modules/' in n or n.endswith('/.env') for n in z.namelist())
 print('DOCX íntegro; ZIP contém código e vídeo atuais e exclui dados privados.')

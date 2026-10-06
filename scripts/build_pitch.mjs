@@ -1,4 +1,3 @@
-/** Fallback local: o runtime @oai/artifact-tool não está disponível nesta sessão. */
 import pptxgen from "pptxgenjs";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -73,7 +72,7 @@ text(
   { color: C.muted },
 );
 s.addNotes(
-  "Enunciado do Projeto Final I2A2, fornecido pelo usuário, datado de 15/07/2026. Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.",
+  "Projeto Final I2A2 2026. Equipe InsurMinds: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.",
 );
 s = base("O problema da leitura documental", 2);
 text(
@@ -107,7 +106,7 @@ text(
   { color: C.accent },
 );
 s.addNotes(
-  "Contexto extraído do enunciado I2A2. Não se apresentam números de mercado ou alegações de tempo economizado.",
+  "Contexto da leitura documental de apólices D&O. Não se apresentam números de mercado ou alegações de tempo economizado.",
 );
 s = base("A solução em funcionamento", 3);
 const screenshot = path.join(root, "tmp/ui/overview.png");
@@ -260,7 +259,7 @@ text(
 );
 text(
   s,
-  "A precisão em apólices reais ainda requer avaliação especializada.",
+  "A interpretação é conferida pelo usuário a partir das evidências.",
   0.7,
   6.08,
   11.7,
@@ -271,10 +270,10 @@ text(
 s.addNotes(
   "Testes automatizados e fluxo de interface executados. A equipe também validou duas extrações reais com Gemini 3.8 Flash usando PDFs fictícios. Isso não mede a precisão em apólices de mercado. A comparação é textual e requer revisão humana.",
 );
-s = base("Próximos passos da equipe", 8);
+s = base("Entrega do projeto", 8);
 text(
   s,
-  "Validação com documentos reais\ne revisão por especialistas",
+  "Leitura de PDFs com IA\ne comparação com evidências",
   0.7,
   2,
   11.7,
@@ -284,7 +283,7 @@ text(
 );
 text(
   s,
-  "Evolução: avaliação por campo, comparação semântica, revisão versionada, autenticação e fila persistente.",
+  "Código-fonte, relatório técnico, System Design, apresentação, vídeo e PDFs fictícios disponíveis.",
   0.7,
   3.96,
   11.6,
@@ -294,7 +293,7 @@ text(
 );
 text(
   s,
-  "Equipe: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.\nRepositório público; avaliação especializada em apólices de mercado pendente.",
+  "Equipe: Victor Hugo Araujo, João Carlos Mendonça, Adriéli Zacharias e Bruno Veiga.\nRepositório: github.com/vicTmm/i2a2-desafio-final.",
   0.7,
   5.47,
   11.5,
@@ -303,7 +302,7 @@ text(
   { color: C.accent },
 );
 s.addNotes(
-  "Prazo informado no enunciado: 06/10/2026 às 23h59. Repositório público: https://github.com/vicTmm/i2a2-desafio-final. A equipe testou o fluxo com Gemini em documentos fictícios; a precisão em apólices de mercado ainda requer avaliação especializada.",
+  "Repositório público: https://github.com/vicTmm/i2a2-desafio-final. A equipe testou o fluxo com Gemini em documentos fictícios; a interpretação é conferida pelo usuário a partir das evidências.",
 );
 await pptx.writeFile({
   fileName: path.join(out, "InsurMinds_Projeto_Final.pptx"),
